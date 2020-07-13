@@ -124,7 +124,7 @@ if (mysqli_num_rows($qr)==1) {
         // check user admin or voter
         if ($userlevel==1) {
             $_SESSION['id']=$userid;
-            header('Location: admindashboard.php');
+            header('Location: admin/admindashboard.php');
             exit(); 
         }
         else {
@@ -143,7 +143,7 @@ if (mysqli_num_rows($qr)==1) {
        header("Location: index.php?error=wrongpassword&username=$username");
 
 }
-else
-    header("Location: index.php?error=usernotfound");
+// else
+//     header("Location: index.php?error=usernotfound");
 }
 ?>
