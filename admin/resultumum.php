@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "connection.php";
+include "../connection.php";
     // get election id
 if (isset($_GET['electionid'])) {
     $_SESSION['electionid']=$_GET['electionid'];
@@ -10,7 +10,7 @@ if (empty($electionid)) {
 }
 //If your session isn't valid, it returns you to the login screen for protection
 if(empty($_SESSION['id'])){
- header("location:index.php");
+ header("location:../index.php");
 }
 
     $query="SELECT c.*,v.*,co.candidate_id,co.total_vote/(SELECT COUNT(voter_id) * 8 FROM voter)*100 AS percentage 
@@ -29,7 +29,7 @@ if(empty($_SESSION['id'])){
 
 
 
-include "launchelectionheader.php";
+include "include/launchelectionheader.php";
 ?>
 <div class="container-fluid">
 
@@ -66,5 +66,5 @@ include "launchelectionheader.php";
 	</div>
 </div>
 <?php
-include "footer.template.php";
+include "include/footer.template.php";
 ?>

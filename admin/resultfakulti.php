@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "connection.php";
+include "../connection.php";
     // get election id
 if (isset($_GET['electionid'])) {
     $_SESSION['electionid']=$_GET['electionid'];
@@ -10,7 +10,7 @@ if (empty($electionid)) {
 }
 //If your session isn't valid, it returns you to the login screen for protection
 if(empty($_SESSION['id'])){
- header("location:index.php");
+ header("location:../index.php");
 }
 // get data from url
 if (isset($_GET['data'])) {
@@ -58,7 +58,7 @@ else{
         echo "SQL error :".mysqli_error($db);
     }
 
-include "launchelectionheader.php";
+include "include/launchelectionheader.php";
 ?>
 <div class="container-fluid">
 <ul class="nav nav-pills">
@@ -135,7 +135,6 @@ include "launchelectionheader.php";
           </div>
 
 
-
 		<hr>
 		<div class="p-2" align="right">
 			<button class="btn btn-primary">End Election</button>
@@ -144,22 +143,22 @@ include "launchelectionheader.php";
 	</div>
 </div>
 <?php
-include "footer.template.php";
+include "include/footer.template.php";
 ?>
  <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../vendor/jquery/jquery.min.js"></script>
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin-2.min.js"></script>
+  <script src="../js/sb-admin-2.min.js"></script>
 
   <!-- Page level plugins -->
-  <script src="vendor/chart.js/Chart.min.js"></script>
+  <script src="../vendor/chart.js/Chart.min.js"></script>
 
   <!-- Page level custom scripts -->
-  <script src="js/demo/chart-area-demo.js"></script>
-  <script src="js/demo/chart-pie-demo.js"></script>
-  <script src="js/demo/chart-bar-demo.js"></script>
+  <script src="../js/demo/chart-area-demo.js"></script>
+  <script src="../js/demo/chart-pie-demo.js"></script>
+  <script src="../js/demo/chart-bar-demo.js"></script>
