@@ -133,7 +133,7 @@ if (mysqli_num_rows($qr)==1) {
             $_SESSION['id']=$voter_id['voter_id'];
             $_SESSION['name']=$voter_id['voter_name'];
             $_SESSION['faculty']=$voter_id['faculty'];
-             header('Location: votingpageumum.php');
+             header('Location: voter/votingpageumum.php');
             exit(); 
 
         }
