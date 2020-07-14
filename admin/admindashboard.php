@@ -60,7 +60,8 @@ if (isset($_GET['data'])) {
             <!-- Search form -->
             <form class="form-inline mr-auto" action="admindashboard.php" method="get" name="formsearch">
               <input  name="txtsearch" class="form-control mr-sm-2" type="text" value="<?=$namedata?>" placeholder="Search" aria-label="Search" onfocus="this.value=''" >
-              <button name="btnsearch" class="btn btn-primary btn-rounded btn-md my-0" type="submit">Search</button>
+              <button name="btnsearch" class="btn btn-primary btn-rounded btn-md my-0" type="submit"><i class="fas fa-search"></i></button>
+
             </form>
               <?php 
                 // error handling for searchbox
