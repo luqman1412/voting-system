@@ -110,7 +110,6 @@ include "include/header.template.php";
 
             <?php
             } ?>
-
                <?php 
                     // succes message
                     if (isset($_GET['success'])) {
@@ -178,12 +177,9 @@ while ($rekod=mysqli_fetch_array($qr)){//redo to other records
 <?php
 include "include/footer.template.php";
 ?>	
-
 <script>
 	$(document).ready(function () {
 $('#dtBasicExample').DataTable();
 $('.dataTables_length').addClass('bs-select');
 });
-
 </script>
-
