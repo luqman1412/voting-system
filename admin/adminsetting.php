@@ -106,7 +106,7 @@ include "include/header.template.php";
                             <label>Section Instrution</label>
                             <input name="txt_<?=$ttl_candidate['section_name']?>_instrution" type="text"  class="form-control " id="title" placeholder="Please select " value="">
                             <label><?=$ttl_candidate['section_name']?> Max vote (total candidate:<?=$ttl_candidate['ttl']?>) </label>
-                            <select name=''  class='form-control '>
+                            <select name='<?=$ttl_candidate['section_name']?>'  class='form-control '>
                                 <?php 
                                     for($i=1;$i<=$ttl_candidate['ttl'];$i++){
                                         echo " <option value='".$i."' >".$i."</option>";}
