@@ -4,60 +4,56 @@ $electionid=$_SESSION['electionid'];
 if(empty($_SESSION['id'])){
  header("location:../index.php?error=alreadylogout");
 }
+// get the can vote form session
+$canvote=$_SESSION['canvote'];
+echo $_SESSION['canvote'];
+
 include "../connection.php";
 // sort data based on faculty
 $status="active";
 if (isset($_GET['data'])) {
-  if ($_GET['data']=="fstm") {
-    $fstm_status=$status;
-    $query="SELECT v.*, f.*
+    $faculty_id=$_GET['data'];
+    switch ($faculty_id) {
+      case '1':
+      $fstm_status=$status;
+        break;
+      case '2':
+      $fsu_status=$status;
+        break;
+      case '3':
+      $fpm_status=$status;
+        break;
+      case '4':
+      $fppi_status=$status;
+        break;
+      case '5':
+      $fp_status=$status;
+        break;
+      
+      default:
+      $all_status=$status;
+        break;
+    }
+        $query="SELECT v.*, f.*
             FROM voter as v
             JOIN faculty as f
             ON v.faculty = f.faculty_id 
-            WHERE v.faculty=1";
-
+            WHERE v.faculty='$faculty_id' ";
   }
-  elseif ($_GET['data']=="fsu") {
-    $fsu_status=$status;
-    $query="SELECT v.*, f.*
+  else{
+            $query="SELECT v.*, f.*
             FROM voter as v
             JOIN faculty as f
-            ON v.faculty = f.faculty_id 
-            WHERE v.faculty=2";
-
+            ON v.faculty = f.faculty_id";
   }
-  elseif ($_GET['data']=="fpm") {
-    $fpm_status=$status;
-    $query="SELECT v.*, f.*
-            FROM voter as v
-            JOIN faculty as f
-            ON v.faculty = f.faculty_id 
-            WHERE v.faculty=3";
+  // check if section is set
+  if ($canvote > 0) {
+      $query="SELECT v.*, f.*
+      FROM voter as v
+      JOIN faculty as f
+      ON v.faculty = f.faculty_id
+      WHERE v.faculty='$canvote'";
   }
-  elseif ($_GET['data']=="fppi") {
-    $fppi_status=$status;
-    $query="SELECT v.*, f.*
-            FROM voter as v
-            JOIN faculty as f
-            ON v.faculty = f.faculty_id 
-            WHERE v.faculty=4";
-  }
-  elseif ($_GET['data']=="fp") {
-    $fp_status=$status;
-    $query="SELECT v.*, f.*
-            FROM voter as v
-            JOIN faculty as f
-            ON v.faculty = f.faculty_id 
-            WHERE v.faculty=5";
-  }
-}
-else{
-    $all_status=$status;
-    $query="SELECT v.*, f.*
-    FROM voter as v
-    JOIN faculty as f
-    ON v.faculty = f.faculty_id ";
-}
 
 $qr=mysqli_query($db,$query);
 if ($qr==false) {
@@ -86,30 +82,34 @@ include "include/header.template.php";
               </div>
             </div>
 
-            <div class="card-body">
 
+            <div class="card-body">
+            <?php if ($canvote ==0) {
+            ?>
               <ul class="nav nav-pills">
               <li class="nav-item">
                 <a class="nav-link <?=$all_status?> " href="voterlist.php">All</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?=$fstm_status?>" href="voterlist.php?data=fstm">FSTM</a>
+                <a class="nav-link <?=$fstm_status?>" href="voterlist.php?data=1">FSTM</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?=$fpm_status?> " href="voterlist.php?data=fpm">FPM</a>
+                <a class="nav-link <?=$fpm_status?> " href="voterlist.php?data=3">FPM</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?=$fppi_status?> " href="voterlist.php?data=fppi">FPPI</a>
+                <a class="nav-link <?=$fppi_status?> " href="voterlist.php?data=4">FPPI</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?=$fsu_status?> " href="voterlist.php?data=fsu">FSU</a>
+                <a class="nav-link <?=$fsu_status?> " href="voterlist.php?data=2">FSU</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?=$fp_status?> " href="voterlist.php?data=fp">FP</a>
+                <a class="nav-link <?=$fp_status?> " href="voterlist.php?data=5">FP</a>
               </li>
             </ul>
+            <hr>
 
-<hr>
+            <?php
+            } ?>
 
                <?php 
                     // succes message
