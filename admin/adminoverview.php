@@ -20,6 +20,7 @@ if(empty($_SESSION['id'])){
         echo "SQL error :".mysqli_error($db);
     }
     $electiondetail=mysqli_fetch_array($qr);
+    $_SESSION['canvote']=$electiondetail['canvote'];
     // get total voter
     $query="SELECT COUNT(*) FROM VOTER";
     $qr=mysqli_query($db,$query);

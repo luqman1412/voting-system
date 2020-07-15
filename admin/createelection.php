@@ -5,26 +5,34 @@ if(empty($_SESSION['id'])){
 }
 include "include/blankheader.php";
 
-if (isset($_POST['btn_submit'])) {
-$id=$_SESSION['id'];
-$electionname=$_POST['txt_electionname'];
-$electionstart=$_POST['txt_start'];
-$electionend=$_POST['txt_end'];
-$status="Paused";
+if (isset($_POST['btn_submit_createelection'])) {
+    $id=$_SESSION['id'];
+    $electionname=$_POST['txt_electionname'];
+    $electionstart=$_POST['txt_start'];
+    $electionend=$_POST['txt_end'];
+    $elction_eligible=$_POST['canvote'];
+    // check if there are field that empty
+    if (empty($electionname)||empty($electionstart)||empty($electionend)||empty($elction_eligible)  ) {
+      // if there are empty field return the page with error message
+      header('Location: createelection.php?error=emptyfield');
+    }
+    else{
+        $status="Paused";
 
-include "../connection.php";
-$query="INSERT INTO election (owner_id,title,start,end,status) VALUES('$id','$electionname','$electionstart','$electionend','$status')";
-$qr=mysqli_query($db,$query);
-if ($qr==false) {
-    echo "Query cannot been executed<br>";
-    echo "SQL error :".mysqli_error($db);
-}
-
-else 
-    // get the lastest id in DB
-    $lastid=mysqli_insert_id($db);
-    $_SESSION['electionid']=$lastid;
-    header('Location: adminoverview.php');
+        include "../connection.php";
+        $query="INSERT INTO election (owner_id,title,start,end,status,canvote) VALUES('$id','$electionname','$electionstart','$electionend','$status','$elction_eligible')";
+        $qr=mysqli_query($db,$query);
+        if ($qr==false) {
+            echo "Failed to save election into DB<br>";
+            echo "SQL error :".mysqli_error($db);
+        }
+        else {
+            // get the lastest id in DB
+            $lastid=mysqli_insert_id($db);
+            $_SESSION['electionid']=$lastid;
+            header('Location: adminoverview.php');
+        }
+    }
 }
 
 ?>
@@ -51,67 +59,74 @@ else
 </head>
 
 <body >
-
-     <div class="text-center" style="padding-top: 30px">
-     </div>
-
   <div class="container" align="center" style="width: 40rem;">
-
     <div class="card o-hidden border-0 shadow-lg my-5"  >
+      <div class="card-header py-3" >
+        <h4 class="m-0  font-weight-bold text-primary">Create an Election</h4>
+      </div>
       <div class="card-body p-0" >
         <!-- align to center in Card Body -->
         <div align="center">
-
             <!-- card padding -->
             <div class="p-5">
-
               <!-- form start -->
               <form class="user" method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>">
-
               		<!-- align left for label  -->
               	<div align="left">
 
-     		<!-- title textbox -->
+     		           <!-- title textbox -->
               		 <div class="form-group">
                       <div align="center">
-                       <h2 class="h4 text-gray-900 mb-4">Create an Election</h2>
                       </div>
-                     	<label  for="title" >Title</label>
-                     	<input name="txt_electionname" type="text"  class="form-control form-control-user" id="title" placeholder="Election Title">
+                      <?php 
+                        if (isset($_GET['error'])) {
+                          if ($_GET['error'] == "emptyfield") {
+                            echo '<div class="alert alert-danger" role="alert">Please fill all the Field!</div> ';
+                          } 
+                        }
+                        else
+                            // echo '<div class="alert alert-danger" role="alert">Please fill all the Field!</div> ';
+                      ?>
+                     	<label>Title</label>
+                     	<input name="txt_electionname" type="text"  class="form-control form-control-user" placeholder="Election Title">
                    	 </div>
                    	 <!-- start date textbox -->
               		 <div class="form-row">
 	    				<div class="form-group col-md-6">
-	    					<label for="starttime">Election Start</label>
-	    					<input name="txt_start" type="datetime-local" class="form-control form-control-user" id="starttime" >
+	    					<label>Election Start</label>
+	    					<input name="txt_start" type="datetime-local" class="form-control form-control-user" >
 	 				   	</div>
 	 				   	<!-- end date textbox -->
+
 					   	<div class="form-group col-md-6">
-					  		<label for="endtime">Election End</label>
-					   		<input name="txt_end" type="datetime-local" class="form-control form-control-user" id="endtimes" >
+					  		<label>Election End</label>
+					   		<input name="txt_end" type="datetime-local" class="form-control form-control-user" >
 					  	</div>
+              <div class="form-group col-md-6">
+                <label>who eligible to vote?</label>
+                <select name='canvote'  class='form-control'>
+                  <option value="0" >All voter</option>
+                  <option value="1" >Fstm voter</option>
+                  <option value="2" >Fsu voter</option>
+                  <option value="3" >Fpm voter</option>
+                  <option value="4" >Fppi voter</option>
+                  <option value="5" >Fp voter</option>
+                </select>
+              </div>
 					 </div>
               	</div>
               	<hr> 
                 <div class="col-md-6">
-                  <input class="btn btn-primary btn-user btn-block" type="submit" name="btn_submit" value="Continue">
-                </div>
-
-   
+                  <input class="btn btn-primary btn-user btn-block" type="submit" name="btn_submit_createelection" value="Continue">
+                </div>   
               </form>
-
               <!-- close card padding -->
             </div>
-
           <!-- close align center in card body -->
         </div>
-
       </div>
     </div>
-
   </div>
-
 </body>
-
 </html>
 <?php include 'include/footer.template.php' ?>
