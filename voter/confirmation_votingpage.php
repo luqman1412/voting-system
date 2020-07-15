@@ -1,10 +1,14 @@
 <?php session_start();
 include '../connection.php';
-    // get pilihan fakulti 
-    $pilihanfakulti=$_POST['fakulti_candidate_selected'];
         // get pilihan umum
     $pilihanumum=$_SESSION['umum'];
-
+    // get pilihan fakulti 
+    $pilihanfakulti=$_POST['fakulti_candidate_selected'];
+    // check selection from fakulti page
+    if (empty($pilihanfakulti)) {
+      // if selection empty return to previos page
+       header("Location: votingpagefakulti.php?error=selection_empty");
+    }
     // print out pilihan (for test only)
     foreach ($pilihanfakulti as $key => $candidate_id) {
         echo " fakulti candidate id: ".$candidate_id ;
@@ -13,7 +17,6 @@ include '../connection.php';
     foreach ($pilihanumum as $key => $candidate_id) {
         echo " umum candidate id: ".$candidate_id ;
     }
-
 
 include 'include/header_votingpage.php' 
 ?>
@@ -105,8 +108,8 @@ include 'include/header_votingpage.php'
                         </table>
                       </div>
                 </div>
-                 <input class="btn btn-danger " name="btn_back" type="submit"value="Back">
-                 <input class="btn btn-primary " name="submit" type="button" value="Submit" onclick="history.back()" >
+                 <input class="btn btn-danger " name="btn_back" type="button"value="Back" onclick="history.back()">
+                 <input class="btn btn-primary " name="submit" type="submit" value="Submit"  >
                     </form>
               </div>
             </div>
