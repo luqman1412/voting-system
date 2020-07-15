@@ -52,7 +52,6 @@
         echo "Query cannot been executed<br>";
         echo "SQL error :".mysqli_error($db);
     }
-    else
 
 // to change string to date format (start time)
 $start = strtotime($electiondetail['start']); 
@@ -87,6 +86,7 @@ include "include/header.template.php";
             </ul>
             <hr>   
     <?php 
+    // show section setting
     if (isset($_GET['section'])) {
          $data_id=$_GET['section'];
          $get_ttl_candidate=mysqli_query($db,"SELECT s.section_name, count(c.candidate_id)as ttl from candidate as c JOIN section as s ON c.section_id=s.section_id WHERE c.section_id='$data_id'");
