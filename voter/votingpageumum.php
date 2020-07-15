@@ -4,6 +4,11 @@ session_start();
 if(empty($_SESSION['id'])){
     header("location:../index.php?error=alreadylogout");
 }
+// insert the selection into the session
+if (isset($_POST['btn_submit_umum'])) {
+$_SESSION['umum']=$_POST['umum_candidate_selected'];
+header('Location: votingpagefakulti.php');
+}
 
 $voterid=$_SESSION['id'];
 include "../connection.php";
@@ -29,33 +34,27 @@ include 'include/header_votingpage.php';
 ?>
 <html>
 <body>
-  <div class="container" align="center" >
-
-    
+  <div class="container" align="center" >  
       <div class="col-xl-7 col-lg-12 col-md-9">
-
         <div class="card o-hidden border-0 shadow-lg my-5">
+          <div class="card-header py-3" >
+            <h5 class="m-0  font-weight-bold text-primary">Calon Umum</h5>
+          </div>
           <div class="card-body p-0">
                 <div class="p-5">
-
+                  <!-- error handling -->
+                  <?php 
+                      if (isset($_GET['error'])) {
+                        if ($_GET['error'] == "selection_empty") {
+                            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">Please select (amount) candidate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';                        }
+                      }
+                      else
+                          echo '<div class="alert alert-dark" role="alert">Please select (amount) candidate!</div> ';
+                   ?>
                   <!-- form start -->
-                  <form name="form_umum" method="POST" action="votingpagefakulti.php">
+                  <form name="form_umum" method="POST" action="votingpageumum.php">
                     <table class="table ">
                       <thead>
-                        <h2>calon umum</h2>
-                        
-                        <!-- error handling -->
-                        <?php 
-                            if (isset($_GET['error'])) {
-                              if ($_GET['error'] == "selection_empty") {
-                                echo '<div class="alert alert-danger" role="alert">Please select (amount) candidate!</div> ';
-                              }
-                            }
-                            else
-                                echo '<div class="alert alert-info" role="alert">Please select (amount) candidate!</div> ';
-                        
-                         ?>
-
                          <tr>
                             <th scope="col">Candidate ID</th>
                             <th scope="col">Candidate Name</th>
@@ -80,7 +79,7 @@ include 'include/header_votingpage.php';
                       ?>   
                       </tbody>
                     </table>
-                    <input  class="btn btn-primary" type="submit" name="btn_submit" value="Next">
+                    <input  class="btn btn-primary" type="submit" name="btn_submit_umum" value="Next">
                   </form>
                 </div>
           </div>
@@ -90,4 +89,8 @@ include 'include/header_votingpage.php';
 
 </body>
 </html>
-<?php include 'include/footer_votingpage.php' ?>
+
+<?php
+
+ include 'include/footer_votingpage.php'
+ ?>
