@@ -3,10 +3,10 @@ $electionid=$_SESSION['electionid'];
 
 //If your session isn't valid, it returns you to the login screen for protection
 if(empty($_SESSION['id'])){
- header("location:index.php");
+ header("location:../index.php");
 }
 
-include 'connection.php';
+include '../connection.php';
 $voterid=$_GET['voter_id'];
 $query="SELECT voter_id from candidate WHERE voter_id= '$voterid' ";
 $qr=mysqli_query($db,$query);
@@ -47,7 +47,7 @@ else{
    else
     // do nothing
   
-include "header.template.php";
+include "include/header.template.php";
 
 ?>
             <!-- align element to center -->
@@ -74,7 +74,7 @@ include "header.template.php";
             <!-- end center element -->
             </div>
 <?php
-include "footer.template.php";
+include "include/footer.template.php";
 }
 
 ?>

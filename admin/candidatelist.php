@@ -2,15 +2,26 @@
 $electionid=$_SESSION['electionid'];
 //If your session isn't valid, it returns you to the login screen for protection
 if(empty($_SESSION['id'])){
- header("location:index.php");
+ header("location:../index.php");
 }
-include "connection.php";
-$query="SELECT c.*,v.voter_name,v.matric_no,s.*
-FROM candidate as c 
-JOIN voter as v 
-ON c.voter_id=v.voter_id
-JOIN section as s 
-ON c.section_id=s.section_id ";
+include "../connection.php";
+if (isset($_GET['section'])) {
+    $section=$_GET['section'];
+    $query="SELECT c.*,v.voter_name,v.matric_no,s.*
+            FROM candidate as c 
+            JOIN voter as v 
+            ON c.voter_id=v.voter_id
+            JOIN section as s 
+            ON c.section_id=s.section_id 
+            WHERE c.section_id='$section' ";
+}
+else
+    $query="SELECT c.*,v.voter_name,v.matric_no,s.*
+    FROM candidate as c 
+    JOIN voter as v 
+    ON c.voter_id=v.voter_id
+    JOIN section as s 
+    ON c.section_id=s.section_id ";
 
 $qr=mysqli_query($db,$query);
 if ($qr==false) {
@@ -24,7 +35,7 @@ if(mysqli_num_rows($qr)==0){
 echo ("No record fetched...<br>");
 }//end no record
 
-include "header.template.php";
+include "include/header.template.php";
 ?>
         <div class="container-fluid">
 
@@ -37,6 +48,27 @@ include "header.template.php";
               </div>
            </div>
             <div class="card-body">
+              <ul class="nav nav-pills">
+                <li class="nav-item">
+                  <a class="nav-link <?=$all_status?> " href="candidatelist.php">All</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link <?=$fstm_status?>" href="candidatelist.php?section=1">FSTM</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link <?=$fpm_status?> " href="candidatelist.php?section=3">FPM</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link <?=$fppi_status?> " href="candidatelist.php?section=4">FPPI</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link <?=$fsu_status?> " href="candidatelist.php?section=2">FSU</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link <?=$fp_status?> " href="candidatelist.php?section=5">FP</a>
+                </li>
+              </ul>
+<hr>
               <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                 <thead>
                   <tr>
@@ -88,7 +120,7 @@ include "header.template.php";
               </table>
 
 <?php
-include "footer.template.php";
+include "include/footer.template.php";
 ?>	
 
 <script>

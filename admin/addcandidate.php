@@ -3,10 +3,10 @@ $electionid=$_SESSION['electionid'];
 
 //If your session isn't valid, it returns you to the login screen for protection
 if(empty($_SESSION['id'])){
- header("location:index.php");
+ header("location:../index.php");
 }
 
-include "connection.php";
+include "../connection.php";
 $query="SELECT * FROM voter";
 
 $qr=mysqli_query($db,$query);
@@ -16,7 +16,7 @@ if ($qr==false) {
 }
 
 
-include "header.template.php";
+include "include/header.template.php";
 ?>
         <div class="container-fluid">
 
@@ -83,7 +83,7 @@ while ($rekod=mysqli_fetch_array($qr)){//redo to other records
   </tfoot>
 </table>
 <?php
-include "footer.template.php";
+include "include/footer.template.php";
 ?>	
 
 <script>
