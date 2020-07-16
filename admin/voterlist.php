@@ -6,7 +6,6 @@ if(empty($_SESSION['id'])){
 }
 // get the can vote form session
 $canvote=$_SESSION['canvote'];
-echo $_SESSION['canvote'];
 
 include "../connection.php";
 // sort data based on faculty
@@ -29,7 +28,6 @@ if (isset($_GET['data'])) {
       case '5':
       $fp_status=$status;
         break;
-      
       default:
       $all_status=$status;
         break;
@@ -41,19 +39,13 @@ if (isset($_GET['data'])) {
             WHERE v.faculty='$faculty_id' ";
   }
   else{
-            $query="SELECT v.*, f.*
-            FROM voter as v
-            JOIN faculty as f
-            ON v.faculty = f.faculty_id";
+     $all_status=$status;
+     $query="SELECT v.*, f.*
+     FROM voter as v
+     JOIN faculty as f
+     ON v.faculty = f.faculty_id";
   }
-  // check if section is set
-  if ($canvote > 0) {
-      $query="SELECT v.*, f.*
-      FROM voter as v
-      JOIN faculty as f
-      ON v.faculty = f.faculty_id
-      WHERE v.faculty='$canvote'";
-  }
+
 
 $qr=mysqli_query($db,$query);
 if ($qr==false) {
@@ -84,8 +76,7 @@ include "include/header.template.php";
 
 
             <div class="card-body">
-            <?php if ($canvote ==0) {
-            ?>
+
               <ul class="nav nav-pills">
               <li class="nav-item">
                 <a class="nav-link <?=$all_status?> " href="voterlist.php">All</a>
@@ -107,9 +98,6 @@ include "include/header.template.php";
               </li>
             </ul>
             <hr>
-
-            <?php
-            } ?>
                <?php 
                     // succes message
                     if (isset($_GET['success'])) {
