@@ -3,23 +3,38 @@
 if(empty($_SESSION['id'])){
  header("location:../index.php?error=alreadylogout");
 }
+include "../connection.php";
 include "include/blankheader.php";
+$check_activeelection=mysqli_query($db,"SELECT * FROM election WHERE status!='End' ");
+// check if there are active election
+if(mysqli_num_rows($check_activeelection)>0){
+header("Location: admindashboard.php?error=activeelection");
+}
+// set default value
+$default_electionname="";
 
 if (isset($_POST['btn_submit_createelection'])) {
+    // get current time
+    date_default_timezone_set('Asia/Kuala_Lumpur');
+    $crttime=date('Y-m-d H:i:s');
+    // get data and set to local variable
     $id=$_SESSION['id'];
     $electionname=$_POST['txt_electionname'];
     $electionstart=$_POST['txt_start'];
     $electionend=$_POST['txt_end'];
     $elction_eligible=$_POST['canvote'];
     // check if there are field that empty
-    if (empty($electionname)||empty($electionstart)||empty($electionend)||empty($elction_eligible)  ) {
+    if (empty($electionname)||empty($electionstart)||empty($electionend)) {
       // if there are empty field return the page with error message
       header('Location: createelection.php?error=emptyfield');
     }
+    elseif ($electionend <= $crttime) {
+      header('Location: createelection.php?error=pastendtime&elecname='.$electionname);
+    }
+
     else{
         $status="Paused";
 
-        include "../connection.php";
         $query="INSERT INTO election (owner_id,title,start,end,status,canvote) VALUES('$id','$electionname','$electionstart','$electionend','$status','$elction_eligible')";
         $qr=mysqli_query($db,$query);
         if ($qr==false) {
@@ -83,12 +98,17 @@ if (isset($_POST['btn_submit_createelection'])) {
                           if ($_GET['error'] == "emptyfield") {
                             echo '<div class="alert alert-danger" role="alert">Please fill all the Field!</div> ';
                           } 
+                          if ($_GET['error']==="pastendtime") {
+                            $default_electionname=$_GET['elecname'];
+                            echo '<div class="alert alert-danger" role="alert">Election time is pasted!</div> ';
+                            
+                          }
                         }
                         else
                             // echo '<div class="alert alert-danger" role="alert">Please fill all the Field!</div> ';
                       ?>
                      	<label>Title</label>
-                     	<input name="txt_electionname" type="text"  class="form-control form-control-user" placeholder="Election Title">
+                     	<input name="txt_electionname" type="text"  class="form-control form-control-user" placeholder="Election Title" value="<?=$default_electionname?>">
                    	 </div>
                    	 <!-- start date textbox -->
               		 <div class="form-row">
@@ -105,7 +125,7 @@ if (isset($_POST['btn_submit_createelection'])) {
               <div class="form-group col-md-6">
                 <label>who eligible to vote?</label>
                 <select name='canvote'  class='form-control'>
-                  <option value="0" >All voter</option>
+                  <option value="0" selected >All voter</option>
                   <option value="1" >Fstm voter</option>
                   <option value="2" >Fsu voter</option>
                   <option value="3" >Fpm voter</option>
