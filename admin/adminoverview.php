@@ -20,9 +20,37 @@ if(empty($_SESSION['id'])){
         echo "SQL error :".mysqli_error($db);
     }
     $electiondetail=mysqli_fetch_array($qr);
-    $_SESSION['canvote']=$electiondetail['canvote'];
+    $canvote=$electiondetail['canvote'];
+    $_SESSION['canvote']=$canvote;
+    echo "$canvote";
+
     // get total voter
-    $query="SELECT COUNT(*) FROM VOTER";
+      $query="SELECT COUNT(*) FROM VOTER ";
+    // text that will show on eligible to vote
+    switch ($canvote) {
+      case '0':
+        $canvote_name="ALL";
+        break;
+      case '1':
+        $canvote_name="Fstm only";
+        break;
+      case '2':
+        $canvote_name="Fsu only";
+        break;
+      case '3':
+        $canvote_name="Fpm only";
+        break;
+      case '4':
+        $canvote_name="Fppi only";
+        break; 
+      case '5':
+        $canvote_name="Fp only";
+        break;
+
+      default:
+        # code...
+        break;
+    }
     $qr=mysqli_query($db,$query);
     if ($qr==false) {
         echo "Query cannot been executed<br>";
@@ -31,10 +59,11 @@ if(empty($_SESSION['id'])){
     $record=mysqli_fetch_array($qr);
     $totalvoter=$record[0];
     // get total candidate
-    $query="SELECT COUNT(*) FROM candidate";
+    $query="SELECT COUNT(*) FROM candidate ";
+
     $qr=mysqli_query($db,$query);
     if ($qr==false) {
-        echo "Query cannot been executed<br>";
+        echo "Failed to total candidate <br>";
         echo "SQL error :".mysqli_error($db);
     }
     $record2=mysqli_fetch_array($qr);
@@ -106,6 +135,26 @@ include "include/header.template.php";
                 </div>
               </div>
             </div>
+
+
+       <!-- Total candidate card -->
+      <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow h-100 py-1">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <!-- label -->
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Candidate</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?=$totalcandidate?></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-user fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
 		</div>
 
 		<div class="row">
@@ -117,8 +166,8 @@ include "include/header.template.php";
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                     	<!-- label -->
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Candidate</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?=$totalcandidate?></div>
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Eligible to vote</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?=$canvote_name?></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-user fa-2x text-gray-300"></i>
