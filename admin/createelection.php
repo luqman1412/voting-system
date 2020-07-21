@@ -16,7 +16,8 @@ $default_electionname="";
 if (isset($_POST['btn_submit_createelection'])) {
     // get current time
     date_default_timezone_set('Asia/Kuala_Lumpur');
-    $crttime=date('Y-m-d H:i:s');
+    // change format to macth with user input
+    $crttime=date('Y-m-d')."T".date('H:i:s');
     // get data and set to local variable
     $id=$_SESSION['id'];
     $electionname=$_POST['txt_electionname'];
@@ -28,10 +29,12 @@ if (isset($_POST['btn_submit_createelection'])) {
       // if there are empty field return the page with error message
       header('Location: createelection.php?error=emptyfield');
     }
-    elseif ($electionend <= $crttime) {
+    elseif ($electionstart==$electionend) {
+      header('Location: createelection.php?error=samestartandend&elecname='.$electionname);
+    }
+    elseif ($crttime > "$electionend") {
       header('Location: createelection.php?error=pastendtime&elecname='.$electionname);
     }
-
     else{
         $status="Paused";
 
@@ -96,11 +99,15 @@ if (isset($_POST['btn_submit_createelection'])) {
                       <?php 
                         if (isset($_GET['error'])) {
                           if ($_GET['error'] == "emptyfield") {
-                            echo '<div class="alert alert-danger" role="alert">Please fill all the Field!</div> ';
+                            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">Please fill all the Field!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';
                           } 
-                          if ($_GET['error']==="pastendtime") {
+                          if ($_GET['error']=="pastendtime") {
                             $default_electionname=$_GET['elecname'];
                             echo '<div class="alert alert-danger" role="alert">Election time is pasted!</div> ';
+                          }
+                          if ($_GET['error']=="samestartandend") {
+                            $default_electionname=$_GET['elecname'];
+                            echo '<div class="alert alert-danger" role="alert">Election start and end time is same! Please change</div> ';
                             
                           }
                         }

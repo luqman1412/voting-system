@@ -3,8 +3,8 @@ session_start();
 include "../connection.php";
 // get current local time
 date_default_timezone_set('Asia/Kuala_Lumpur');
-$time=date('Y-m-d H:i:s');
-
+$time=date('h:i a d.m.Y');
+echo "$time"; 
     // get election detail
 if (isset($_GET['electionid'])) {
     $_SESSION['electionid']=$_GET['electionid'];
@@ -33,24 +33,25 @@ if(empty($_SESSION['id'])){
         echo "SQL error :".mysqli_error($db);
     }
     $electiondetail=mysqli_fetch_array($qr);
+    $election_starttime=date("h:i a d.m.Y", strtotime($electiondetail['start']));
+    echo "<br> ".$election_starttime ;
     $electionstatus=$electiondetail['status'];
-    $alarm=$electiondetail['end'];
+    $endtime=date("h:i a d.m.Y", strtotime($electiondetail['end']));
 
     // check if election reach end time
-    if($time>"$alarm"){
+    if($time>="$endtime"){
       // set election status to end
       $status="End";
       $electionstatus=$status;
-      $query="UPDATE election set status='$status'
-              WHERE  election_id=$electionid";
-      $qr=mysqli_query($db,$query);
+
+      $qr=mysqli_query($db,"UPDATE election set status='$status' WHERE  election_id=$electionid");
       if ($qr==false) {
-        echo "Query cannot been executed<br>";
+        echo "Failed to update election status<br>";
         echo "SQL error :".mysqli_error($db);
       }
     }
     else{
-     header("Refresh:30");
+     header("Refresh:60");
     }
     // get total voter
     $query="SELECT COUNT(*) FROM VOTER";
@@ -69,8 +70,8 @@ if(empty($_SESSION['id'])){
         echo "Query cannot been executed<br>";
         echo "SQL error :".mysqli_error($db);
     }
-    $record2=mysqli_fetch_array($qr);
-    $totalcandidate=$record2[0];
+    $totalcandidate=mysqli_fetch_array($qr);
+    $totalcandidate=$totalcandidate[0];
 
 include "include/launchelectionheader.php";
 ?>
@@ -80,6 +81,21 @@ include "include/launchelectionheader.php";
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
           </div>
+          <?php 
+          // check election status
+          if ($time>="$endtime") {
+              echo '<div class="alert alert-success" role="alert">The election has ended <a href="resultpage.php" class="alert-link">View result >> </a>.</div> ';
+          }
+          elseif ($time <"$election_starttime") {
+              echo '<div class="alert alert-success" role="alert">The election will start on '.$election_starttime.' This page should refresh in 60 seconds..</div> ';
+          }
+
+          elseif ($time >="$election_starttime") {
+            echo '<div class="alert alert-success" role="alert">Your election is running and will automatically end on: '.$endtime.' .</div> ';
+          } 
+
+
+           ?>
 
     <div class="row">
 
@@ -112,7 +128,7 @@ include "include/launchelectionheader.php";
                     <div class="col mr-2">
                     	<!-- label -->
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Start Date</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?=$electiondetail['start']?></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?=$election_starttime?> </div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -129,7 +145,7 @@ include "include/launchelectionheader.php";
                     <div class="col mr-2">
                     	<!-- label -->
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">End Date</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?=$electiondetail['end']?></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?=$endtime?></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-calendar fa-2x text-gray-300"></i>
