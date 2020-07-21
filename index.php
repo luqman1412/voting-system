@@ -124,6 +124,7 @@ if (mysqli_num_rows($qr)==1) {
         // check user admin or voter
         if ($userlevel==1) {
             $_SESSION['id']=$userid;
+            $_SESSION['name']=$username;
             header('Location: admin/admindashboard.php');
             exit(); 
         }
