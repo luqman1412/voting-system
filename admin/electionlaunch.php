@@ -3,7 +3,8 @@ session_start();
 include "../connection.php";
 // get current local time
 date_default_timezone_set('Asia/Kuala_Lumpur');
-$time=date('h:i a d.m.Y');
+$time=date('Y-m-d H:i:s');
+date('Y-m-d H:i:s'); 
 echo "$time"; 
     // get election detail
 if (isset($_GET['electionid'])) {
@@ -33,10 +34,10 @@ if(empty($_SESSION['id'])){
         echo "SQL error :".mysqli_error($db);
     }
     $electiondetail=mysqli_fetch_array($qr);
-    $election_starttime=date("h:i a d.m.Y", strtotime($electiondetail['start']));
+    $election_starttime=date("Y-m-d H:i:s", strtotime($electiondetail['start']));
     echo "<br> ".$election_starttime ;
     $electionstatus=$electiondetail['status'];
-    $endtime=date("h:i a d.m.Y", strtotime($electiondetail['end']));
+    $endtime=date("Y-m-d H:i:s", strtotime($electiondetail['end']));
 
     // check if election reach end time
     if($time>="$endtime"){
