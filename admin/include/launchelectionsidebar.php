@@ -39,16 +39,16 @@ elseif ($pagename=="resultfakulti.php") {
 
       <!-- candidate item -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="resultpage.php">
           <i class="fas fa-fw fa-cog"></i>
           <span>Result</span>
         </a>
-        <div id="collapseTwo" class="collapse <?=$result_show?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+<!--         <div id="collapseTwo" class="collapse <?=$result_show?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item <?=$result_umum?>" href="resultumum.php">Umum</a>
             <a class="collapse-item <?=$result_fakulti?>" href="resultfakulti.php">Fakulti</a>
           </div>
-        </div>
+        </div> -->
       </li>
 
         
