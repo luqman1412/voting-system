@@ -21,7 +21,6 @@
             $section_name=$record['section_name'];
             $sql=mysqli_query($db,"UPDATE section SET max_vote='$max_vote' WHERE section_name ='$section_name' ");
         }
-
     }
     
     // check if save setting button is clicked
@@ -37,15 +36,19 @@
             echo "SQL error :".mysqli_error($db);
         }
     }
+    // if fakulti button is selected 
     if (isset($_POST['btn_Fstm_setting'])||isset($_POST['btn_Fsu_setting'])||isset($_POST['btn_Fpm_setting'])||isset($_POST['btn_Fppi_setting'])||isset($_POST['btn_Fp_setting'])) {
-      $instrution=$_GET['txt_section_instrution'];
-      $max_candiate=$_GET['number_ofcandidate'];
-      $query="UPDATE section SET title='$newelectionname',start='$newelectionstart',end='$newelectionend' WHERE election_id='$electionid' ";
+
+      $section_id=$_POST['section_id'];
+      $instrution=$_POST['txt_section_instrution'];
+      $max_candiate=$_POST['number_ofcandidate'];
+      $query="UPDATE section SET max_vote='$max_candiate',section_instrution='$instrution' WHERE section_id= '$section_id'";
       $qr=mysqli_query($db,$query);
         if ($qr==false) {
-            echo "Query cannot been executed<br>";
+            echo "Failed to update election instrution and max vote<br>";
             echo "SQL error :".mysqli_error($db);
         }
+      header('Location: adminsetting.php?section='.$section_id);
     }
     // get election detail from DB
     $qr=mysqli_query($db,"SELECT * FROM election WHERE election_id ='$electionid'");
@@ -98,10 +101,11 @@ include "include/header.template.php";
     <?php 
     // show section setting
     if (isset($_GET['section'])) {
-         $data_id=$_GET['section'];
-         $get_ttl_candidate=mysqli_query($db,"SELECT s.section_name, count(c.candidate_id)as ttl from candidate as c JOIN section as s ON c.section_id=s.section_id WHERE c.section_id='$data_id'");
+         $section_id=$_GET['section'];
+         $get_ttl_candidate=mysqli_query($db,"SELECT s.section_name, s.max_vote, s.section_instrution, count(c.candidate_id)as ttl from candidate as c JOIN section as s ON c.section_id=s.section_id WHERE c.section_id='$section_id'");
         $ttl_candidate=mysqli_fetch_array($get_ttl_candidate);
     ?>
+    <!-- fakultiv setting section -->
     <form class="user" method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>">
         <div class="card o-hidden border-0 shadow-lg my-1"  >
             <div class="card-header py-3" >
@@ -111,15 +115,26 @@ include "include/header.template.php";
              <!-- card padding -->
                 <div class="p-4">
                   <div class='form-group col-md-4'>
+                      <!--  section instrutions-->
                       <label>Section Instrution</label>
-                      <input name="txt_section_instrution" type="text"  class="form-control " id="title" placeholder="Please select " value="">
+                      <input name="txt_section_instrution" type="text"  class="form-control " id="title"  value="<?=$ttl_candidate['section_instrution']?>">
+                      <!-- section max candidate -->
                       <label><?=$ttl_candidate['section_name']?> Max vote (total candidate:<?=$ttl_candidate['ttl']?>) </label>
                       <select name='number_ofcandidate'  class='form-control '>
                           <?php 
                               for($i=1;$i<=$ttl_candidate['ttl'];$i++){
-                                  echo " <option value='".$i."' >".$i."</option>";}
+                                // check previos selected value
+                                if ($i==$ttl_candidate['max_vote']) {
+                                  echo " <option selected value='".$i."' >".$i."</option>";
+                                  
+                                }
+                                else
+                                  echo " <option value='".$i."' >".$i."</option>";
+                              }
                            ?>
                       </select>
+                      <!-- section id hidden -->
+                      <input type="hidden" name="section_id" value="<?=$section_id?>">
                   </div>
                   <div align="right">
                       <div  class="col-md-2">

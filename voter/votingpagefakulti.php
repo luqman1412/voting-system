@@ -1,5 +1,7 @@
 <?php
 session_start();
+include "../connection.php";
+
 //If your session isn't valid, it returns you to the login screen for protection
 if(empty($_SESSION['id'])){
 header("location:../index.php?error=alreadylogout");
@@ -21,7 +23,9 @@ $pilihanumum=$_SESSION['umum'];
 foreach ($pilihanumum as $indexarray => $datainarray) {
     echo "key: ".$indexarray." value: ".$datainarray ."- ";
 }
-include "../connection.php";
+// get section instrution from DB
+$get_section_instruction=mysqli_query($db,"SELECT * FROM section WHERE section_id =$voterfaculty ");
+$section_instrution_maxvote=mysqli_fetch_array($get_section_instruction);
 // get fakulti candidate from DB
 $query="SELECT c.*,v.*,s.*
         FROM candidate as c 
@@ -55,11 +59,11 @@ include 'include/header_votingpage.php';
               <?php 
                 if (isset($_GET['error'])) {
                   if ($_GET['error'] == "selection_empty") {
-                    echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">Please select (amount) candidate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';
+                    echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">'.$section_instrution_maxvote['section_instrution'].' '.$section_instrution_maxvote['max_vote'].' candidate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';
                   }
                 }
                 else
-                  echo '<div>Please select (amount) candidate!</div> <br>';
+                  echo '<div>'.$section_instrution_maxvote['section_instrution'].' '.$section_instrution_maxvote['max_vote']. ' candidate!</div> <br>';
                ?>
               <!-- form start -->
               <form name="form_fakulti" method="POST" action="confirmation_votingpage.php">
