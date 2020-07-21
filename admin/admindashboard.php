@@ -69,7 +69,7 @@ if (isset($_GET['data'])) {
                 if (isset($_GET['success'])) {
                   if ($_GET['success']=="successfullydeleted") {
 
-                     echo '<br><div class="alert alert-success" role="alert">Election has been deleted</div> ';
+                     echo '<br><div class="alert alert-warning" role="alert">Election has been deleted</div> ';
                   }
                 }
                 echo "<hr>";
@@ -79,7 +79,7 @@ if (isset($_GET['data'])) {
                      echo '<br><div class="alert alert-danger" role="alert">No record found for: ' .$search_name.'</div> ';
                   }
                   if ($_GET['error']=="activeelection") {
-                     echo '<br><div class="alert alert-danger" role="alert">Only 1 active election are allowed </div> ';
+                     echo '<br><div class="alert alert-danger" role="alert">Only <strong>1 active election</strong> are allowed! </div> ';
                     
                   }
                 }
@@ -89,11 +89,10 @@ if (isset($_GET['data'])) {
                 <tr>
                   <th class="th-sm">Status
                   </th>
-                  <th class="th-sm">Start Date
-                  </th>
+                  <th class="th-sm">Title
                   <th class="th-sm">End Date
                   </th>
-                  <th class="th-sm">Title
+                  <th class="th-sm">Start Date
                   </th>
                   <th class="th-sm">Action
                   </th>
@@ -103,23 +102,27 @@ if (isset($_GET['data'])) {
               <tbody>
               	<?php
                 while ($record=mysqli_fetch_array($qr)) {
-                  if ($record['status']=="Paused") {
-                    $view_location="adminoverview";
-                  }
-                  else
-                    $view_location="electionlaunch";
+                      $start_time=date("d.m.Y h:i a", strtotime($record['start']));
+                      $end_time=date("d.m.Y h:i a", strtotime($record['end']));
+
+                      if ($record['status']=="Paused") {
+                        $redirect_pagename="adminoverview";
+                      }
+                      else
+                        $redirect_pagename="electionlaunch";
             ?>
                 <tr>
                  <td> <?=$record['status']?></td>
-                 <td> <?=$record['start']?></td>
-                 <td> <?=$record['end']?></td>
                  <td> <?=$record['title']?></td>
+
+                 <td> <?=$start_time?></td>
+                 <td> <?=$end_time?></td>
                  <td>
                   <!-- delete election button -->
                   <a class="btn btn-danger btn-circle " href="deleteelection.php?electionid=<?=$record['election_id']?>"><i class="fas fa-trash"></i></a>
                
                   <!-- view election button -->
-                  <a class="btn btn-primary btn-circle " href="<?=$view_location?>.php?electionid=<?=$record['election_id']?>"><i class="fas fa-eye"></i></a>
+                  <a class="btn btn-primary btn-circle " href="<?=$redirect_pagename?>.php?electionid=<?=$record['election_id']?>"><i class="fas fa-eye"></i></a>
                 </td>   
                </tr>
 <?php 
