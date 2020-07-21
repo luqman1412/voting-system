@@ -49,7 +49,7 @@ else{
     ON co.candidate_id=c.candidate_id
     JOIN voter AS v
     ON c.voter_id=v.voter_id
-    WHERE c.section_id >0";
+    WHERE c.section_id =0";
 }
     
     $qr=mysqli_query($db,$query);
@@ -63,7 +63,7 @@ include "include/launchelectionheader.php";
 <div class="container-fluid">
 <ul class="nav nav-pills">
               <li class="nav-item">
-                <a class="nav-link <?=$all_status?> " href="resultfakulti.php">All</a>
+                <a class="nav-link <?=$all_status?> " href="resultfakulti.php">Umum</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link <?=$fstm_status?>" href="resultfakulti.php?data=1">FSTM</a>
@@ -91,7 +91,7 @@ include "include/launchelectionheader.php";
             <div class="col-xl-8 col-lg-7">
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Result Faculty</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Result </h6>
                 </div>
                 <div class="card-body">
                   <?php                     
