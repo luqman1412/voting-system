@@ -37,6 +37,16 @@
             echo "SQL error :".mysqli_error($db);
         }
     }
+    if (isset($_POST['btn_Fstm_setting'])||isset($_POST['btn_Fsu_setting'])||isset($_POST['btn_Fpm_setting'])||isset($_POST['btn_Fppi_setting'])||isset($_POST['btn_Fp_setting'])) {
+      $instrution=$_GET['txt_section_instrution'];
+      $max_candiate=$_GET['number_ofcandidate'];
+      $query="UPDATE section SET title='$newelectionname',start='$newelectionstart',end='$newelectionend' WHERE election_id='$electionid' ";
+      $qr=mysqli_query($db,$query);
+        if ($qr==false) {
+            echo "Query cannot been executed<br>";
+            echo "SQL error :".mysqli_error($db);
+        }
+    }
     // get election detail from DB
     $qr=mysqli_query($db,"SELECT * FROM election WHERE election_id ='$electionid'");
     if ($qr==false) {
@@ -100,24 +110,22 @@ include "include/header.template.php";
             <div class="card-body p-0" >
              <!-- card padding -->
                 <div class="p-4">
-   
-
-                        <div class='form-group col-md-4'>
-                            <label>Section Instrution</label>
-                            <input name="txt_<?=$ttl_candidate['section_name']?>_instrution" type="text"  class="form-control " id="title" placeholder="Please select " value="">
-                            <label><?=$ttl_candidate['section_name']?> Max vote (total candidate:<?=$ttl_candidate['ttl']?>) </label>
-                            <select name='<?=$ttl_candidate['section_name']?>'  class='form-control '>
-                                <?php 
-                                    for($i=1;$i<=$ttl_candidate['ttl'];$i++){
-                                        echo " <option value='".$i."' >".$i."</option>";}
-                                 ?>
-                            </select>
-                        </div>
-                        <div align="right">
-                            <div  class="col-md-2">
-                                <input class="btn btn-primary btn-user btn-block" type="submit" name="btn_<?=$ttl_candidate['section_name']?>_setting" value="Save">
-                            </div>
-                        </div>
+                  <div class='form-group col-md-4'>
+                      <label>Section Instrution</label>
+                      <input name="txt_section_instrution" type="text"  class="form-control " id="title" placeholder="Please select " value="">
+                      <label><?=$ttl_candidate['section_name']?> Max vote (total candidate:<?=$ttl_candidate['ttl']?>) </label>
+                      <select name='number_ofcandidate'  class='form-control '>
+                          <?php 
+                              for($i=1;$i<=$ttl_candidate['ttl'];$i++){
+                                  echo " <option value='".$i."' >".$i."</option>";}
+                           ?>
+                      </select>
+                  </div>
+                  <div align="right">
+                      <div  class="col-md-2">
+                          <input class="btn btn-primary btn-user btn-block" type="submit" name="btn_<?=$ttl_candidate['section_name']?>_setting" value="Save">
+                      </div>
+                  </div>
                     
                 </div>
             </div>
