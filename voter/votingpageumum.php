@@ -1,17 +1,33 @@
 <?php
 session_start();
+include "../connection.php";
+
 //If your session isn't valid, it returns you to the login screen for protection
 if(empty($_SESSION['id'])){
     header("location:../index.php?error=alreadylogout");
 }
+// get voter id from SESSIONs
+$voterid=$_SESSION['id'];
+
+// check if election are ended if true go to election_endedpage.php
+$check_running_election=mysqli_query($db,"SELECT * FROM election WHERE status = 'Running'");
+if(mysqli_num_rows($check_running_election)==0){
+  echo "election has ended";
+  // header("Location: error_votingpage.php?error=electionended");
+}
+// check if voter already vote
+$alreadyvote_inDB=mysqli_query($db,"SELECT * FROM alreadyvote WHERE voter_id= '$voterid' ");
+if(mysqli_num_rows($alreadyvote_inDB)>0){
+  echo ("Your alredy vote<br>");
+  // header('Location: error_votingpage.php?error=alreadyvote');
+}
+
 // insert the selection into the session
 if (isset($_POST['btn_submit_umum'])) {
 $_SESSION['umum']=$_POST['umum_candidate_selected'];
 header('Location: votingpagefakulti.php');
 }
 
-$voterid=$_SESSION['id'];
-include "../connection.php";
 // get candidate from DB
 $query="SELECT c.*,v.voter_name,v.matric_no,v.voter_id
 FROM candidate as c 
