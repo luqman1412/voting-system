@@ -1,4 +1,4 @@
-<?php
+<?php session_start();
 $electionid=$_GET['electionid'];
 
 if (isset($_GET['election_id'])) {
