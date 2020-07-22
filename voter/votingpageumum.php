@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+// get current local time
+date_default_timezone_set('Asia/Kuala_Lumpur');
+$time=date('Y-m-d H:i:s');
+
 include "../connection.php";
 
 //If your session isn't valid, it returns you to the login screen for protection
@@ -15,37 +20,74 @@ if(mysqli_num_rows($check_running_election)==0){
   echo "election has ended";
   // header("Location: error_votingpage.php?error=electionended");
 }
+else{
+  $election_detail=mysqli_fetch_array($check_running_election);
+  $electionid=$election_detail['election_id'];
+  // get election id,name and end time and assign to session
+  $_SESSION['electionid']=$electionid;
+  $_SESSION['electiontitle']=$election_detail['title'];
+  $_SESSION['electionendtime']=$election_detail['end'];
+  // change time format to match with current times
+  $endtime=date("Y-m-d H:i:s", strtotime($_SESSION['electionendtime']));
+    // check if election reach end time if true set election status to end
+    if($time>="$endtime"){
+      $status="End";
+      $election_detail['status']=$status;
+      $qr=mysqli_query($db,"UPDATE election set status='$status' WHERE  election_id=$electionid");
+      if ($qr==false) {
+        echo "Failed to update election status<br>";
+        echo "SQL error :".mysqli_error($db);
+      }
+      echo "election has ended";
+      // header("Location: error_votingpage.php?error=electionended");
+    }
+    else{
+      // page will be refresh in 30 second
+     header("Refresh:30");
+    }
+}
 // check if voter already vote
 $alreadyvote_inDB=mysqli_query($db,"SELECT * FROM alreadyvote WHERE voter_id= '$voterid' ");
 if(mysqli_num_rows($alreadyvote_inDB)>0){
-  echo ("Your alredy vote<br>");
+  echo ("Your already vote<br>");
   // header('Location: error_votingpage.php?error=alreadyvote');
 }
+// section instrution 
+$section_instrution=mysqli_query($db,"SELECT * FROM section WHERE section_id=0");
+$umum_instrution=mysqli_fetch_array($section_instrution);
 
-// insert the selection into the session
-if (isset($_POST['btn_submit_umum'])) {
-$_SESSION['umum']=$_POST['umum_candidate_selected'];
-header('Location: votingpagefakulti.php');
+// check data verification if all data okay insert the selection into the session and go to next page
+if(isset($_POST['btn_submit_umum'])) {
+    // check in no candidate is selected
+    if (empty($_POST['umum_candidate_selected'])) {
+        header("Location:votingpageumum.php?error=selection_empty");
+    }
+    // check if number of candidate > max vote
+    elseif (count($_POST['umum_candidate_selected'])>$umum_instrution['max_vote']) {
+        header('Location: votingpageumum.php?error=overflow');
+    }
+    elseif (count($_POST['umum_candidate_selected'])<$umum_instrution['max_vote']) {
+        header('Location: votingpageumum.php?error=notenough');
+    }
+    else{
+      $_SESSION['umum']=$_POST['umum_candidate_selected'];
+      header('Location: votingpagefakulti.php');
+    }
 }
 
-// get candidate from DB
+// get candidate informatiom from DB
 $query="SELECT c.*,v.voter_name,v.matric_no,v.voter_id
 FROM candidate as c 
 JOIN voter as v 
 ON c.voter_id=v.voter_id
-WHERE section_id=0";
+WHERE c.section_id=0";
 
-$qr=mysqli_query($db,$query);
-if ($qr==false) {
-    echo "Query cannot been executed<br>";
+$candidate_information=mysqli_query($db,$query);
+if ($candidate_information==false) {
+    echo "Failed to get candidate information<br>";
     echo "SQL error :".mysqli_error($db);
 }
-$get_voterdetail=mysqli_query($db,"SELECT * FROM voter");
-if ($qr==false) {
-    echo "Failed to get voter information <br>";
-    echo "SQL error :".mysqli_error($db);
-}
-$voter_record=mysqli_fetch_array($get_voterdetail);
+
 include 'include/header_votingpage.php';
 ?>
 <html>
@@ -62,10 +104,17 @@ include 'include/header_votingpage.php';
                   <?php 
                       if (isset($_GET['error'])) {
                         if ($_GET['error'] == "selection_empty") {
-                            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">Please select (amount) candidate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';                        }
+                            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">'.$umum_instrution['section_instrution'].' '.$umum_instrution['max_vote'].' candidate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> '; 
+                        }
+                        elseif ($_GET['error'] == "overflow") {
+                            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">'.$umum_instrution['section_instrution'].' '.$umum_instrution['max_vote'].' candidate only!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> '; 
+                        }
+                        elseif ($_GET['error'] == "notenough") {
+                            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert"> Not enough..'.$umum_instrution['section_instrution'].' '.$umum_instrution['max_vote'].' candidate!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> '; 
+                        }
                       }
                       else
-                          echo '<div class="alert alert-dark" role="alert">Please select (amount) candidate!</div> ';
+                          echo '<div class="alert alert-light" role="alert">'.$umum_instrution['section_instrution'].' '.$umum_instrution['max_vote'].' candidate!</div> ';
                    ?>
                   <!-- form start -->
                   <form name="form_umum" method="POST" action="votingpageumum.php">
@@ -79,7 +128,7 @@ include 'include/header_votingpage.php';
                       </thead>
                       <tbody>
                         <?php
-                          while ($record=mysqli_fetch_array($qr)){//redo to other records
+                          while ($record=mysqli_fetch_array($candidate_information)){//redo to other records
                         ?>
                       <tr>
                         <td ><?=$record['candidate_id']?></td>
@@ -101,7 +150,6 @@ include 'include/header_votingpage.php';
           </div>
         </div>
       </div>
-
 
 </body>
 </html>

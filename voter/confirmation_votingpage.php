@@ -1,22 +1,53 @@
 <?php session_start();
 include '../connection.php';
-        // get pilihan umum
-    $pilihanumum=$_SESSION['umum'];
-    // get pilihan fakulti 
-    $pilihanfakulti=$_POST['fakulti_candidate_selected'];
-    // check selection from fakulti page
-    if (empty($pilihanfakulti)) {
-      // if selection empty return to previos page
-       header("Location: votingpagefakulti.php?error=selection_empty");
-    }
-    // print out pilihan (for test only)
-    foreach ($pilihanfakulti as $key => $candidate_id) {
-        echo " fakulti candidate id: ".$candidate_id ;
-    }
+// get current local time
+date_default_timezone_set('Asia/Kuala_Lumpur');
+$time=date('Y-m-d H:i:s');
+// get pilihan umum
+$pilihanumum=$_SESSION['umum'];
+// get pilihan fakulti 
+$pilihanfakulti=$_SESSION['fakulti'];
+if (empty($pilihanumum)) {
+header('Location: votingpageumum.php?selection_empty');
+}
+elseif (empty($pilihanfakulti)) {
+header('Location: votingpagefakulti.php?selection_empty');
+}
+// print out pilihan (for test only)
+foreach ($pilihanfakulti as $key => $candidate_id) {
+    echo " fakulti candidate id: ".$candidate_id ;
+}
 
-    foreach ($pilihanumum as $key => $candidate_id) {
-        echo " umum candidate id: ".$candidate_id ;
+foreach ($pilihanumum as $key => $candidate_id) {
+    echo " umum candidate id: ".$candidate_id ;
+}
+// get voter id, voter faculty_id & election id from session
+$voterid=$_SESSION['id'];
+$voterfaculty=$_SESSION['faculty'];
+$electionid=$_SESSION['electionid'];
+// check if voter already vote
+$alreadyvote_inDB=mysqli_query($db,"SELECT * FROM alreadyvote WHERE voter_id= '$voterid' ");
+if(mysqli_num_rows($alreadyvote_inDB)>0){
+  echo ("Your already vote<br>");
+  // header('Location: error_votingpage.php?error=alreadyvote');
+}
+// change time format to match with current times
+$endtime=date("Y-m-d H:i:s", strtotime($_SESSION['electionendtime']));
+  // check if election reach end time if true set election status to end
+  if($time>="$endtime"){
+    $status="End";
+    $election_detail['status']=$status;
+    $qr=mysqli_query($db,"UPDATE election set status='$status' WHERE  election_id=$electionid");
+    if ($qr==false) {
+      echo "Failed to update election status<br>";
+      echo "SQL error :".mysqli_error($db);
     }
+    echo "election has ended";
+    // header("Location: error_votingpage.php?error=electionended");
+  }
+  else{
+   header("Refresh:30");
+  }
 
 include 'include/header_votingpage.php' 
 ?>
