@@ -4,9 +4,8 @@ include "../connection.php";
 // get current local time
 date_default_timezone_set('Asia/Kuala_Lumpur');
 $time=date('Y-m-d H:i:s');
-date('Y-m-d H:i:s'); 
-echo "$time"; 
-    // get election detail
+echo "this is current time $time<br>"; 
+// get election detail
 if (isset($_GET['electionid'])) {
     $_SESSION['electionid']=$_GET['electionid'];
 }
