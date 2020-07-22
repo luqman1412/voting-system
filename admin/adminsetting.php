@@ -54,18 +54,54 @@
 
 // to change string to date format (start time)
 $start = strtotime($electiondetail['start']); 
-$starttime= date("Y-m-d\\Th:i:s", $start); 
+$starttime= date("Y-m-d\\TH:i:s", $start); 
 // to change string to date format (end time)
 $end = strtotime($electiondetail['end']); 
-$endtime= date("Y-m-d\\Th:i:s", $end); 
+$endtime= date("Y-m-d\\TH:i:s", $end); 
 
 include "include/header.template.php";
 ?>
 <div class="container-fluid">
 
+ 
+    <?php 
+    // show section setting
+    if (isset($_GET['section'])) {
+         $section_id=$_GET['section'];
+         switch ($section_id) {
+           case '0':
+              $umum_status="active";
+             break;
+           case '1':
+              $fstm_status="active";
+             break;
+           case '2':
+              $fsu_status="active";
+             break;             
+           case '3':
+              $fpm_status="active";
+             break;             
+           case '4':
+              $fppi_status="active";
+             break;
+           case '5':
+              $fp_status="active";
+             break;
+
+           default:
+             # code...
+             break;
+         }
+         // get total candidate from DB (for dropbox on section setting)
+         $get_ttl_candidate=mysqli_query($db,"SELECT s.section_name, s.max_vote, s.section_instrution, count(c.candidate_id)as ttl from candidate as c JOIN section as s ON c.section_id=s.section_id WHERE c.section_id='$section_id'");
+        $ttl_candidate=mysqli_fetch_array($get_ttl_candidate);
+    ?>
      <ul class="nav nav-pills">
               <li class="nav-item">
                 <a class="nav-link <?=$all_status?> " href="adminsetting.php">General </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link <?=$umum_status?>" href="adminsetting.php?section=0">Umum</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link <?=$fstm_status?>" href="adminsetting.php?section=1">FSTM</a>
@@ -97,23 +133,20 @@ include "include/header.template.php";
                   <div class='form-group col-md-10'>
                     <div class="row">
                       <div class="col-auto">
-                       <!-- <label>Section Instrution</label> -->
-                       <label for="section" class="col-auto col-form-label">Section Instrution</label>
+                       <label for="section" class="col-auto col-form-label">Section Instrution:</label>
                       </div>
                       <div class="col-md-2">
                          <!--  section instrutions-->
                       <input name="txt_section_instrution" type="text"  class="form-control " id="section"  value="<?=$ttl_candidate['section_instrution']?>">
                       </div>
                       <div class="col-auto">
-                                              <!-- section max candidate -->
-                      <!-- <label><?=$ttl_candidate['section_name']?> Max vote (total candidate:<?=$ttl_candidate['ttl']?>) </label> -->
+                        <!-- number of candidate -->
                       <select name='number_ofcandidate'  class='form-control '>
                           <?php 
                               for($i=1;$i<=$ttl_candidate['ttl'];$i++){
                                 // check previos selected value
                                 if ($i==$ttl_candidate['max_vote']) {
                                   echo " <option selected value='".$i."' >".$i." Candidate</option>";
-                                  
                                 }
                                 else
                                   echo " <option value='".$i."' >".$i." Candidate</option>";
@@ -137,16 +170,41 @@ include "include/header.template.php";
         </div>
     </form>
     <?php }
+
     else{
+
 
       if (isset($_GET['error'])) {
         if ($_GET['error']=="endtime") {
-            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">Please fill all the Field!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';
-
+            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">Election end time already passed! Please change election end time<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';
         }
       }
 
       ?>
+           <ul class="nav nav-pills">
+              <li class="nav-item">
+                <a class="nav-link active " href="adminsetting.php">General </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="adminsetting.php?section=0">Umum</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="adminsetting.php?section=1">FSTM</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link  " href="adminsetting.php?section=3">FPM</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link  " href="adminsetting.php?section=4">FPPI</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link  " href="adminsetting.php?section=2">FSU</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link  " href="adminsetting.php?section=5">FP</a>
+              </li>
+            </ul>
+            <hr> 
        <!-- general setting card -->
        <div class="card o-hidden border-0 shadow-lg my-1"  >
         <div class="card-header py-3" >
