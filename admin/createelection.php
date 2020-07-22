@@ -52,10 +52,10 @@ if (isset($_POST['btn_submit_createelection'])) {
       header('Location: createelection.php?error=pastendtime&elecname='.$electionname);
     }
     // check if the end time is less than 5 minute
-    elseif ($minimumelectiontime < "$plus5minute") {
-      echo "must be at least 5 minute ";
-      header('Location: createelection.php?error=lessthan5minute&elecname='.$electionname);
-    }
+    // elseif ($minimumelectiontime < "$plus5minute") {
+    //   echo "must be at least 5 minute ";
+    //   header('Location: createelection.php?error=lessthan5minute&elecname='.$electionname);
+    // }
     // if above not true add the election information on the data base
     else{
         $status="Paused";
