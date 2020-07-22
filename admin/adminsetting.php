@@ -6,28 +6,14 @@
     //If your session isn't valid, it returns you to the login screen for protection
     if(empty($_SESSION['id'])){
     header("location:../index.php?error=alreadylogout");
-    }
-
-    // check if section setting button is clicked
-    if (isset($_POST['btn_section_setting'])) {
-        $query="SELECT section_name from section";
-        $qr=mysqli_query($db,$query);
-        if ($qr==false) {
-            echo "Query cannot been executed<br>";
-            echo "SQL error :".mysqli_error($db);
-        }
-        while ($record=mysqli_fetch_array($qr)) {
-            $max_vote=$_POST[$record['section_name']];
-            $section_name=$record['section_name'];
-            $sql=mysqli_query($db,"UPDATE section SET max_vote='$max_vote' WHERE section_name ='$section_name' ");
-        }
-    }
-    
+    }    
     // check if save setting button is clicked
     if (isset($_POST['btn_general_setting'])) {
         $newelectionname=$_POST['txt_electionname'];
         $newelectionstart=$_POST['txt_start'];
         $newelectionend=$_POST['txt_end'];
+        // check data validation
+
         // update data in db
         $query="UPDATE election SET title='$newelectionname',start='$newelectionstart',end='$newelectionend' WHERE election_id='$electionid' ";
         $qr=mysqli_query($db,$query);
@@ -97,15 +83,9 @@ include "include/header.template.php";
                 <a class="nav-link <?=$fp_status?> " href="adminsetting.php?section=5">FP</a>
               </li>
             </ul>
-            <hr>   
-    <?php 
-    // show section setting
-    if (isset($_GET['section'])) {
-         $section_id=$_GET['section'];
-         $get_ttl_candidate=mysqli_query($db,"SELECT s.section_name, s.max_vote, s.section_instrution, count(c.candidate_id)as ttl from candidate as c JOIN section as s ON c.section_id=s.section_id WHERE c.section_id='$section_id'");
-        $ttl_candidate=mysqli_fetch_array($get_ttl_candidate);
-    ?>
-    <!-- fakultiv setting section -->
+            <hr>  
+
+    <!-- fakulti setting section -->
     <form class="user" method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>">
         <div class="card o-hidden border-0 shadow-lg my-1"  >
             <div class="card-header py-3" >
