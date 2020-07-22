@@ -36,8 +36,8 @@
             echo "SQL error :".mysqli_error($db);
         }
     }
-    // if fakulti button is selected 
-    if (isset($_POST['btn_Fstm_setting'])||isset($_POST['btn_Fsu_setting'])||isset($_POST['btn_Fpm_setting'])||isset($_POST['btn_Fppi_setting'])||isset($_POST['btn_Fp_setting'])) {
+    // if fakulti or umum save button is selected 
+    if (isset($_POST['btn_Umum_setting'])||isset($_POST['btn_Fstm_setting'])||isset($_POST['btn_Fsu_setting'])||isset($_POST['btn_Fpm_setting'])||isset($_POST['btn_Fppi_setting'])||isset($_POST['btn_Fp_setting'])) {
 
       $section_id=$_POST['section_id'];
       $instrution=$_POST['txt_section_instrution'];
@@ -114,28 +114,38 @@ include "include/header.template.php";
             <div class="card-body p-0" >
              <!-- card padding -->
                 <div class="p-4">
-                  <div class='form-group col-md-4'>
-                      <!--  section instrutions-->
-                      <label>Section Instrution</label>
-                      <input name="txt_section_instrution" type="text"  class="form-control " id="title"  value="<?=$ttl_candidate['section_instrution']?>">
-                      <!-- section max candidate -->
-                      <label><?=$ttl_candidate['section_name']?> Max vote (total candidate:<?=$ttl_candidate['ttl']?>) </label>
+                  <div class='form-group col-md-10'>
+                    <div class="row">
+                      <div class="col-auto">
+                       <!-- <label>Section Instrution</label> -->
+                       <label for="section" class="col-auto col-form-label">Section Instrution</label>
+                      </div>
+                      <div class="col-md-2">
+                         <!--  section instrutions-->
+                      <input name="txt_section_instrution" type="text"  class="form-control " id="section"  value="<?=$ttl_candidate['section_instrution']?>">
+                      </div>
+                      <div class="col-auto">
+                                              <!-- section max candidate -->
+                      <!-- <label><?=$ttl_candidate['section_name']?> Max vote (total candidate:<?=$ttl_candidate['ttl']?>) </label> -->
                       <select name='number_ofcandidate'  class='form-control '>
                           <?php 
                               for($i=1;$i<=$ttl_candidate['ttl'];$i++){
                                 // check previos selected value
                                 if ($i==$ttl_candidate['max_vote']) {
-                                  echo " <option selected value='".$i."' >".$i."</option>";
+                                  echo " <option selected value='".$i."' >".$i." Candidate</option>";
                                   
                                 }
                                 else
-                                  echo " <option value='".$i."' >".$i."</option>";
+                                  echo " <option value='".$i."' >".$i." Candidate</option>";
                               }
                            ?>
                       </select>
+                      </div>
+                    </div>
                       <!-- section id hidden -->
                       <input type="hidden" name="section_id" value="<?=$section_id?>">
                   </div>
+                  <hr>
                   <div align="right">
                       <div  class="col-md-2">
                           <input class="btn btn-primary btn-user btn-block" type="submit" name="btn_<?=$ttl_candidate['section_name']?>_setting" value="Save">
@@ -148,6 +158,14 @@ include "include/header.template.php";
     </form>
     <?php }
     else{
+
+      if (isset($_GET['error'])) {
+        if ($_GET['error']=="endtime") {
+            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">Please fill all the Field!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';
+
+        }
+      }
+
       ?>
        <!-- general setting card -->
        <div class="card o-hidden border-0 shadow-lg my-1"  >
