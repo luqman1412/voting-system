@@ -1,6 +1,5 @@
 <?php 
-// get voter name from SESSION 
-$voter_name=$_SESSION['name'];
+$election_name=$_SESSION['electiontitle'];
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,7 +44,7 @@ $voter_name=$_SESSION['name'];
           <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
           </button>
-            <span class="navbar-brand">Nama election</span>
+            <span class="navbar-brand"><?=$election_name?></span>
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
@@ -55,7 +54,7 @@ $voter_name=$_SESSION['name'];
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-white-600 small"><?=$voter_name?></span>
+                <span class="mr-2 d-none d-lg-inline text-white-600 small"><?=$_SESSION['name']?></span>
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
