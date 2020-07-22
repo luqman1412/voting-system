@@ -4,8 +4,6 @@ $electionid=$_SESSION['electionid'];
 if(empty($_SESSION['id'])){
  header("location:../index.php?error=alreadylogout");
 }
-// get the can vote form session
-$canvote=$_SESSION['canvote'];
 
 include "../connection.php";
 // sort data based on faculty
