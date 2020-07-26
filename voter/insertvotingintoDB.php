@@ -20,5 +20,10 @@ foreach ($_POST as $arrayindex => $candidateid) {
    } 
 // add voter to alreadyvote table
 $alreadyvote=mysqli_query($db,"INSERT INTO alreadyvote (voter_id) VALUES ('$voter_id')");
-echo " show successfull mesage ";
+if ($add_vote==false) {
+  echo "Failed to add voter to already voter table in DB <br>";
+  echo "SQL error :".mysqli_error($db);
+}
+else
+  header('Location: error_votingpage.php?success=succesfullyvote');
 ?>

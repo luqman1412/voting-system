@@ -59,6 +59,10 @@
                       if ($_GET['succes']=="registered") {
                         echo '<div class="alert alert-success" role="succes">Succesfully registered, you now can continue to login </div> ';
                       }
+                      if ($_GET['succes']=="successfullylogout") {
+                        echo '<div class="alert alert-success" role="succes">Logout Succesfully</div> ';
+                        
+                      }
                     }
                    ?>
                   <!-- form start -->
