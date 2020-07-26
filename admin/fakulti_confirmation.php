@@ -29,7 +29,7 @@ if (mysqli_num_rows($qr)>0) {
       header( "Location: fakulti_voterlist.php?error=alreadycandidate" );
 }
 else {
-// to get candidate information from database
+// to get voter information from database
     $query="SELECT v.*,f.name
             FROM voter as v 
             JOIN faculty as f 
@@ -64,10 +64,10 @@ else {
       $qr=mysqli_query($db,$sql);
 
       if ($qr==true){
-        // get candidate id from database
+        // get last inserted candidate id from database
         $candidate_id = mysqli_insert_id($db);
         // to add into count database
-        $sql="INSERT INTO count (candidate_id) VALUES ('$candidate_id')";
+        $sql="INSERT INTO count (candidate_id,section_id) VALUES ('$candidate_id',$voter_faculty)";
         $qr=mysqli_query($db,$sql);
         // redirect to candidate list page after succesfully insett data into DB 
         header('Location: candidatefakulti.php');

@@ -8,10 +8,13 @@ if(empty($_SESSION['id'])){
 
 include "../connection.php";
 
+
 $query="SELECT v.*,f.*
         FROM voter as v
         JOIN faculty as f 
-        ON v.faculty=f.faculty_id";
+        ON v.faculty=f.faculty_id
+        WHERE voter_id NOT IN 
+        (SELECT voter_id FROM candidate)";
 
 $qr=mysqli_query($db,$query);
 if ($qr==false) {
