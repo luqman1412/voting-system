@@ -68,12 +68,8 @@ while ($electiontitle=mysqli_fetch_array($headername)){
               <!-- election name in header -->
             <h2><?=$electionname?></h2>
 
-
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
-
-            
-            
 
             <div class="topbar-divider d-none d-sm-block"></div>
 
