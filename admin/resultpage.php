@@ -43,7 +43,7 @@ if (isset($_GET['data'])) {
 }
 else{
   $all_status='active';
-  $query="SELECT c.*,v.*,co.candidate_id,co.total_vote/(SELECT COUNT(voter_id) * 8 FROM voter)*100 AS percentage 
+  $query="SELECT c.*,v.*,co.candidate_id,co.total_vote,co.total_vote/(SELECT SUM(total_vote) from count WHERE section_id =0) *100 AS percentage 
     FROM count  AS co 
     JOIN candidate AS c 
     ON co.candidate_id=c.candidate_id
@@ -57,9 +57,14 @@ else{
         echo "Query cannot been executed<br>";
         echo "SQL error :".mysqli_error($db);
     }
+// variable for pie chart
+$candidatename = array();
+$totalvotereceive =array();
+$colorscheme= array("#f94144", "#873408", "#f8961e", "#C64606", "#f9c74f", "#90be6d", "#43aa8b", "#4d908e", "#577590", "#277da1");
 
 include "include/launchelectionheader.php";
 ?>
+
 <div class="container-fluid">
 <ul class="nav nav-pills">
               <li class="nav-item">
@@ -95,7 +100,12 @@ include "include/launchelectionheader.php";
                 </div>
                 <div class="card-body">
                   <?php                     
-                     while ($candidate=mysqli_fetch_array($qr)) { ?>
+                     while ($candidate=mysqli_fetch_array($qr)) { 
+                            // asign value for pie chart value
+                            array_push($totalvotereceive, $candidate['total_vote']);
+                            array_push($candidatename, $candidate['voter_name']);
+
+                            ?>
                             <h4 class="small font-weight-bold"><?="id".$candidate['voter_id']." ".$candidate['voter_name']?> <span class="float-right"><?=$candidate['percentage']?></span></h4>
                             <div class="progress mb-4">
                             <div class="progress-bar" role="progressbar" style="width: <?=$candidate['percentage']?>%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
@@ -110,23 +120,25 @@ include "include/launchelectionheader.php";
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Pie chart</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Vote chart</h6>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
                   <div class="chart-pie pt-4 pb-2">
-                    <canvas id="myPieChart"></canvas>
+                    <canvas id="myChart"></canvas>
+                    
                   </div>
+                  <!-- text for pie chart -->
                   <div class="mt-4 text-center small">
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-primary"></i> Direct
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-success"></i> Social
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-info"></i> Referral
-                    </span>
+                    <?php  
+                      foreach ($candidatename as $number => $name) {
+                        echo '<span class="mr-2">
+                                  <i class="fas fa-circle "  style=color:'.$colorscheme[$number].';"></i>'.$name.'
+                              </span>';
+                      }
+
+                    ?>
+
                   </div>
                 </div>
               </div>
@@ -145,6 +157,43 @@ include "include/launchelectionheader.php";
 <?php
 include "include/footer.template.php";
 ?>
+<!--  Javascript code for Pie Chart -->
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'doughnut',
+
+    // The data for our dataset
+    data: {
+        labels: <?php echo json_encode($candidatename);?> ,
+        datasets: [{
+            backgroundColor: <?php echo json_encode($colorscheme);?>,
+            data: <?php echo json_encode($totalvotereceive, JSON_NUMERIC_CHECK);?>
+        }]
+    },
+
+    // Configuration options go here
+      options: {
+    maintainAspectRatio: false,
+    tooltips: {
+      backgroundColor: "rgb(255,255,255)",
+      bodyFontColor: "#858796",
+      borderColor: '#dddfeb',
+      borderWidth: 1,
+      xPadding: 15,
+      yPadding: 15,
+      displayColors: false,
+      caretPadding: 10,
+    },
+    legend: {
+      display: false
+    },
+    cutoutPercentage: 70,
+  }
+});
+
+</script>
  <!-- Bootstrap core JavaScript-->
   <script src="../vendor/jquery/jquery.min.js"></script>
   <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -158,7 +207,7 @@ include "include/footer.template.php";
   <!-- Page level plugins -->
   <script src="../vendor/chart.js/Chart.min.js"></script>
 
-  <!-- Page level custom scripts -->
+<!--    Page level custom scripts -->
   <script src="../js/demo/chart-area-demo.js"></script>
   <script src="../js/demo/chart-pie-demo.js"></script>
-  <script src="../js/demo/chart-bar-demo.js"></script>
+  <script src="../js/demo/chart-bar-demo.js"></script> 
