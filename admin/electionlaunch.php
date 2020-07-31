@@ -22,14 +22,14 @@ if(empty($_SESSION['id'])){
             WHERE  election_id=$electionid";
     $qr=mysqli_query($db,$query);
     if ($qr==false) {
-         echo "Query cannot been executed<br>";
+         echo "ailed to update election status<br>";
         echo "SQL error :".mysqli_error($db);
     }
 
     $query="SELECT * FROM election WHERE election_id=$electionid ";
     $qr=mysqli_query($db,$query);
     if ($qr==false) {
-        echo "Query cannot been executed<br>";
+        echo "Failed to get election informationbr>";
         echo "SQL error :".mysqli_error($db);
     }
     $electiondetail=mysqli_fetch_array($qr);
@@ -54,10 +54,10 @@ if(empty($_SESSION['id'])){
      header("Refresh:60");
     }
     // get total voter
-    $query="SELECT COUNT(*) FROM VOTER";
+    $query="SELECT COUNT(*) FROM voter";
     $qr=mysqli_query($db,$query);
     if ($qr==false) {
-        echo "Query cannot been executed<br>";
+        echo "Failed to get total voter<br>";
         echo "SQL error :".mysqli_error($db);
     }
 
@@ -67,7 +67,7 @@ if(empty($_SESSION['id'])){
     $query="SELECT COUNT(*) FROM candidate";
     $qr=mysqli_query($db,$query);
     if ($qr==false) {
-        echo "Query cannot been executed<br>";
+        echo "Failed to get total candidate<br>";
         echo "SQL error :".mysqli_error($db);
     }
     $totalcandidate=mysqli_fetch_array($qr);
