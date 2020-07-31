@@ -15,14 +15,13 @@ if(empty($_SESSION['id'])){
 // get data from url
 if (isset($_GET['data'])) {
   $sort_id=$_GET['data'];
-
-  $query="SELECT c.*,v.*,co.candidate_id,co.total_vote/(SELECT COUNT(voter_id) * 8 FROM voter)*100 AS percentage 
+  $query="SELECT c.*,v.*,co.candidate_id,co.total_vote,ROUND(co.total_vote/(SELECT SUM(total_vote) from count WHERE section_id ='$sort_id') *100,2) AS percentage 
     FROM count  AS co 
     JOIN candidate AS c 
     ON co.candidate_id=c.candidate_id
     JOIN voter AS v
     ON c.voter_id=v.voter_id
-    WHERE c.section_id='$sort_id'";
+    WHERE c.section_id ='$sort_id'";
       switch ($sort_id) {
     case '1':
       $fstm_status="active";
@@ -42,14 +41,18 @@ if (isset($_GET['data'])) {
   }
 }
 else{
+  // umum results
   $all_status='active';
-  $query="SELECT c.*,v.*,co.candidate_id,co.total_vote,co.total_vote/(SELECT SUM(total_vote) from count WHERE section_id =0) *100 AS percentage 
+  // variable for querry
+
+  $query="SELECT c.*,v.*,co.candidate_id,co.total_vote,ROUND(co.total_vote/(SELECT SUM(total_vote) from count WHERE section_id =0)*100,2) AS percentage 
     FROM count  AS co 
     JOIN candidate AS c 
     ON co.candidate_id=c.candidate_id
     JOIN voter AS v
     ON c.voter_id=v.voter_id
     WHERE c.section_id =0";
+    
 }
     
     $qr=mysqli_query($db,$query);
@@ -57,33 +60,36 @@ else{
         echo "Query cannot been executed<br>";
         echo "SQL error :".mysqli_error($db);
     }
+
 // variable for pie chart
 $candidatename = array();
 $totalvotereceive =array();
-$colorscheme= array("#f94144", "#873408", "#f8961e", "#C64606", "#f9c74f", "#90be6d", "#43aa8b", "#4d908e", "#577590", "#277da1");
+$colorscheme= array('#e6194B', '#3cb44b', '#ffe119', '#f58231', '#42d4f4', '#f032e6', '#fabed4', '#469990', '#dcbeff', '#9A6324', '#fffac8', '#800000', '#aaffc3', '#000075', '#a9a9a9', '#000000');
 
 include "include/launchelectionheader.php";
 ?>
 
+
+
 <div class="container-fluid">
 <ul class="nav nav-pills">
               <li class="nav-item">
-                <a class="nav-link <?=$all_status?> " href="resultfakulti.php">Umum</a>
+                <a class="nav-link <?=$all_status?> " href="resultpage.php">Umum</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?=$fstm_status?>" href="resultfakulti.php?data=1">FSTM</a>
+                <a class="nav-link <?=$fstm_status?>" href="resultpage.php?data=1">FSTM</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?=$fpm_status?> " href="resultfakulti.php?data=3">FPM</a>
+                <a class="nav-link <?=$fpm_status?> " href="resultpage.php?data=3">FPM</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?=$fppi_status?> " href="resultfakulti.php?data=4">FPPI</a>
+                <a class="nav-link <?=$fppi_status?> " href="resultpage.php?data=4">FPPI</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?=$fsu_status?> " href="resultfakulti.php?data=2">FSU</a>
+                <a class="nav-link <?=$fsu_status?> " href="resultpage.php?data=2">FSU</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?=$fp_status?> " href="resultfakulti.php?data=5">FP</a>
+                <a class="nav-link <?=$fp_status?> " href="resultpage.php?data=5">FP</a>
               </li>
             </ul>
 
@@ -99,18 +105,22 @@ include "include/launchelectionheader.php";
                   <h6 class="m-0 font-weight-bold text-primary">Result </h6>
                 </div>
                 <div class="card-body">
-                  <?php                     
+                  <?php
+                     $color=0;
                      while ($candidate=mysqli_fetch_array($qr)) { 
                             // asign value for pie chart value
                             array_push($totalvotereceive, $candidate['total_vote']);
                             array_push($candidatename, $candidate['voter_name']);
 
                             ?>
-                            <h4 class="small font-weight-bold"><?="id".$candidate['voter_id']." ".$candidate['voter_name']?> <span class="float-right"><?=$candidate['percentage']?></span></h4>
+                            <h4 class="small font-weight-bold"><?="id".$candidate['voter_id']." ".$candidate['voter_name']?> <span class="float-right"><?=$candidate['percentage']." %"?></span></h4>
                             <div class="progress mb-4">
-                            <div class="progress-bar" role="progressbar" style="width: <?=$candidate['percentage']?>%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-#3cb44b" role="progressbar" style="width: <?=$candidate['percentage']?>% ; background-color: <?=$colorscheme[$color]?> "  aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" ></div>
                             </div>
-                  <?php } ?>
+                  <?php 
+                      $color++;
+                      }
+                       ?>
                 </div>
               </div>
             </div>
@@ -145,6 +155,8 @@ include "include/launchelectionheader.php";
             </div>
 
           </div>
+
+
     <hr>
     <div class="p-2" align="right">
       <button class="btn btn-primary">End Election</button>
@@ -192,3 +204,4 @@ var chart = new Chart(ctx, {
 });
 
 </script>
+ 

@@ -64,7 +64,7 @@ else{
 // variable for pie chart
 $candidatename = array();
 $totalvotereceive =array();
-$colorscheme= array("#f94144", "#873408", "#f8961e", "#C64606", "#f9c74f", "#90be6d", "#43aa8b", "#4d908e", "#577590", "#277da1");
+$colorscheme= array('#e6194B', '#3cb44b', '#ffe119', '#f58231', '#42d4f4', '#f032e6', '#fabed4', '#469990', '#dcbeff', '#9A6324', '#fffac8', '#800000', '#aaffc3', '#000075', '#a9a9a9', '#000000');
 
 include "include/launchelectionheader.php";
 ?>
@@ -105,17 +105,22 @@ include "include/launchelectionheader.php";
                   <h6 class="m-0 font-weight-bold text-primary">Result </h6>
                 </div>
                 <div class="card-body">
-                  <?php                     
-                     while ($candidate=mysqli_fetch_array($qr)) {
-                          // asign value for pie chart value
-                          array_push($totalvotereceive, $candidate['total_vote']);
-                          array_push($candidatename, $candidate['voter_name']);
-                      ?>
+                  <?php
+                     $color=0;
+                     while ($candidate=mysqli_fetch_array($qr)) { 
+                            // asign value for pie chart value
+                            array_push($totalvotereceive, $candidate['total_vote']);
+                            array_push($candidatename, $candidate['voter_name']);
+
+                            ?>
                             <h4 class="small font-weight-bold"><?="id".$candidate['voter_id']." ".$candidate['voter_name']?> <span class="float-right"><?=$candidate['percentage']." %"?></span></h4>
                             <div class="progress mb-4">
-                            <div class="progress-bar" role="progressbar" style="width: <?=$candidate['percentage']?>%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-#3cb44b" role="progressbar" style="width: <?=$candidate['percentage']?>% ; background-color: <?=$colorscheme[$color]?> "  aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" ></div>
                             </div>
-                  <?php } ?>
+                  <?php 
+                      $color++;
+                      }
+                       ?>
                 </div>
               </div>
             </div>
