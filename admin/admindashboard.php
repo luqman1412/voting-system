@@ -16,7 +16,7 @@ if (isset($_GET['btnsearch'])) {
   $query="SELECT * FROM election WHERE title like '%$searchname%' ";
   $qr=mysqli_query($db,$query);
   if ($qr==false) {
-      echo "Failed to searh data<br>";
+      echo "Failed to search data<br>";
       echo "SQL error :".mysqli_error($db);
   }
   //Check the record effected, if no record,
@@ -69,17 +69,17 @@ if (isset($_GET['data'])) {
                 if (isset($_GET['success'])) {
                   if ($_GET['success']=="successfullydeleted") {
 
-                     echo '<br><div class="alert alert-warning" role="alert">Election has been deleted</div> ';
+                     echo '<br><div class="alert alert-warning" role="alert">Election has been deleted!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';
                   }
                 }
                 echo "<hr>";
                 // error handling for searchbox
                 if (isset($_GET['error'])) {
                   if ($_GET['error']=="norecordfund") {
-                     echo '<br><div class="alert alert-danger" role="alert">No record found for: ' .$search_name.'</div> ';
+                     echo '<br><div class="alert alert-danger" role="alert">No record found for: ' .$search_name.'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';
                   }
                   if ($_GET['error']=="activeelection") {
-                     echo '<br><div class="alert alert-danger" role="alert">Only <strong>1 active election</strong> are allowed! </div> ';
+                     echo '<br><div class="alert alert-danger" role="alert">Only <strong>1 active election</strong> are allowed! <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';
                     
                   }
                 }
