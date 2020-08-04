@@ -1,5 +1,4 @@
-<?php
-session_start();
+<?php session_start();
 
 // get current local time
 date_default_timezone_set('Asia/Kuala_Lumpur');
@@ -9,7 +8,9 @@ include "../connection.php";
 
 //If your session isn't valid, it returns you to the login screen for protection
 if(empty($_SESSION['id'])){
-    header("location:../index.php?error=alreadylogout");
+  echo " session id not exsit";
+  header("location:../index.php?error=alreadylogout");
+  exit();
 }
 // get voter id from SESSIONs
 $voterid=$_SESSION['id'];
@@ -18,7 +19,8 @@ $voterid=$_SESSION['id'];
 $check_running_election=mysqli_query($db,"SELECT * FROM election WHERE status = 'Running'");
 if(mysqli_num_rows($check_running_election)==0){
   echo "election has ended";
-  // header("Location: error_votingpage.php?error=electionended");
+  header("Location: error_votingpage.php?error=electionended");
+  exit();
 }
 else{
   $election_detail=mysqli_fetch_array($check_running_election);
@@ -39,7 +41,8 @@ else{
         echo "SQL error :".mysqli_error($db);
       }
       echo "election has ended";
-      // header("Location: error_votingpage.php?error=electionended");
+      header("Location: error_votingpage.php?error=electionended");
+      exit();
     }
     else{
       // page will be refresh in 30 second
@@ -50,7 +53,8 @@ else{
 $alreadyvote_inDB=mysqli_query($db,"SELECT * FROM alreadyvote WHERE voter_id= '$voterid' ");
 if(mysqli_num_rows($alreadyvote_inDB)>0){
   echo ("Your already vote<br>");
-  // header('Location: error_votingpage.php?error=alreadyvote');
+  header('Location: error_votingpage.php?error=alreadyvote');
+  exit();
 }
 // section instrution 
 $section_instrution=mysqli_query($db,"SELECT * FROM section WHERE section_id=0");

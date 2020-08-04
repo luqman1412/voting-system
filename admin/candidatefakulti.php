@@ -18,7 +18,7 @@ if (isset($_GET['data'])) {
               ON v.faculty=f.faculty_id
               JOIN section as s 
               ON c.section_id= s.section_id 
-              WHERE c.section_id = 1";
+              WHERE c.section_id = 1 AND c.election_id = '$electionid' ";
 
       }
       elseif ($_GET['data']=="fsu") {
@@ -31,7 +31,7 @@ if (isset($_GET['data'])) {
               ON v.faculty=f.faculty_id
               JOIN section as s 
               ON c.section_id= s.section_id 
-              WHERE c.section_id = 2";
+              WHERE c.section_id = 2 AND c.election_id = '$electionid'";
 
       }
       elseif ($_GET['data']=="fpm") {
@@ -44,7 +44,7 @@ if (isset($_GET['data'])) {
               ON v.faculty=f.faculty_id
               JOIN section as s 
               ON c.section_id= s.section_id 
-              WHERE c.section_id = 3";
+              WHERE c.section_id = 3 AND c.election_id = '$electionid'";
       }
       elseif ($_GET['data']=="fppi") {
         $fppi_status=$status;
@@ -56,7 +56,7 @@ if (isset($_GET['data'])) {
               ON v.faculty=f.faculty_id
               JOIN section as s 
               ON c.section_id= s.section_id 
-              WHERE c.section_id = 4";
+              WHERE c.section_id = 4 AND c.election_id = '$electionid'";
       }
       elseif ($_GET['data']=="fp") {
         $fp_status=$status;
@@ -68,7 +68,7 @@ if (isset($_GET['data'])) {
               ON v.faculty=f.faculty_id
               JOIN section as s 
               ON c.section_id= s.section_id 
-              WHERE c.section_id = 5";
+              WHERE c.section_id = 5 AND c.election_id = '$electionid'";
       }
 }
 else{
@@ -81,21 +81,15 @@ else{
             ON v.faculty=f.faculty_id
             JOIN section as s 
             ON c.section_id= s.section_id 
-            WHERE c.section_id !=0 ";
+            WHERE c.section_id !=0 AND c.election_id = '$electionid'";
 }
 
 
 $qr=mysqli_query($db,$query);
 if ($qr==false) {
-    echo "Query cannot been executed<br>";
+    echo "Failed to get candidates information<br>";
     echo "SQL error :".mysqli_error($db);
 }
-
-//Check the record effected, if no records,
-//display a message
-if(mysqli_num_rows($qr)==0){
-echo ("No record fetched...<br>");
-}//end no record
 
 include "include/header.template.php";
 ?>
@@ -130,8 +124,14 @@ include "include/header.template.php";
                 <a class="nav-link <?=$fp_status?> " href="candidatefakulti.php?data=fp">FP</a>
               </li>
             </ul>
-
-<hr>
+            <hr>
+            <?php 
+              if (isset($_GET['success'])) {
+                if ($_GET['success']=="addcandidate") {
+                    echo '<div class="alert alert-success" role="success">Succesfully add candidate !</div> ';
+                }
+              }
+               ?>
               <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                 <thead>
                   <tr>

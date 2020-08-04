@@ -13,11 +13,11 @@ $query="SELECT v.*,f.*
         JOIN faculty as f 
         ON v.faculty=f.faculty_id
         WHERE voter_id NOT IN 
-        (SELECT voter_id FROM candidate)";
+        (SELECT voter_id FROM candidate WHERE election_id ='$electionid')";
 
 $qr=mysqli_query($db,$query);
 if ($qr==false) {
-    echo "Query cannot been executed<br>";
+    echo "Failed to get voter information on candidate umum <br>";
     echo "SQL error :".mysqli_error($db);
 }
 

@@ -5,6 +5,7 @@ if(empty($_SESSION['id'])){
  header("location:../index.php?error=alreadylogout");
 }
 include "../connection.php";
+
 $query="SELECT c.*,v.*,f.name,s.*
 FROM candidate as c 
 JOIN voter as v 
@@ -13,20 +14,15 @@ JOIN faculty as f
 ON v.faculty=f.faculty_id
 JOIN section as s 
 ON c.section_id= s.section_id 
-WHERE c.section_id=0 ";
+WHERE c.section_id=0 AND c.election_id = '$electionid'";
 
 
 $qr=mysqli_query($db,$query);
 if ($qr==false) {
-    echo "Query cannot been executed1<br>";
+    echo "Failed to get candidate information<br>";
     echo "SQL error :".mysqli_error($db);
 }
 
-//Check the record effected, if no records,
-//display a message
-if(mysqli_num_rows($qr)==0){
-echo ("No record fetched...<br>");
-}//end no record
 
 include "include/header.template.php";
 ?>
