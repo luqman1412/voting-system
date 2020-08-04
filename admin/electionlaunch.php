@@ -4,7 +4,6 @@ include "../connection.php";
 // get current local time
 date_default_timezone_set('Asia/Kuala_Lumpur');
 $time=date('Y-m-d H:i:s');
-echo "this is current time $time<br>"; 
 // get election detail
 if (isset($_GET['electionid'])) {
     $_SESSION['electionid']=$_GET['electionid'];
@@ -34,7 +33,6 @@ if(empty($_SESSION['id'])){
     }
     $electiondetail=mysqli_fetch_array($qr);
     $election_starttime=date("Y-m-d H:i:s", strtotime($electiondetail['start']));
-    echo "<br> ".$election_starttime ;
     $electionstatus=$electiondetail['status'];
     $endtime=date("Y-m-d H:i:s", strtotime($electiondetail['end']));
 

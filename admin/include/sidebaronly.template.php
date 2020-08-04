@@ -8,15 +8,15 @@ if ($pagename=="adminoverview.php") {
 elseif ($pagename=="adminsetting.php") {
     $setting_active=$current_page;
 }
-elseif ($pagename=="candidateumum.php") {
+elseif ($pagename=="candidateumum.php"|| $pagename=="umum_voterlist.php"|| $pagename=="umum_confirmation.php") {
     $candidate_show="show";
     $candidateumum_active=$current_page;
     }
-elseif ($pagename=="candidatefakulti.php") {
+elseif ($pagename=="candidatefakulti.php"|| $pagename=="fakulti_voterlist.php"|| $pagename=="fakulti_confirmation.php") {
       $candidate_show="show";
     $candidatefakulti_active=$current_page;
     }
-elseif ($pagename=="voterlist.php") {
+elseif ($pagename=="voterlist.php" || $pagename=="addvoter.php") {
     $voter_active=$current_page;
     }
 elseif ($pagename=="launchmenu.php") {
