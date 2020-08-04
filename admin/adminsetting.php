@@ -6,7 +6,12 @@
     //If your session isn't valid, it returns you to the login screen for protection
     if(empty($_SESSION['id'])){
     header("location:../index.php?error=alreadylogout");
+    exit();
     }    
+    // get current local time
+    date_default_timezone_set('Asia/Kuala_Lumpur');
+    $time=date('Y-m-d H:i:s');
+
     // check if save setting button is clicked
     if (isset($_POST['btn_general_setting'])) {
         $newelectionname=$_POST['txt_electionname'];
@@ -18,9 +23,11 @@
         $query="UPDATE election SET title='$newelectionname',start='$newelectionstart',end='$newelectionend' WHERE election_id='$electionid' ";
         $qr=mysqli_query($db,$query);
         if ($qr==false) {
-            echo "Query cannot been executed<br>";
+            echo "Failed to update election information<br>";
             echo "SQL error :".mysqli_error($db);
         }
+        else
+          header('Location: adminsetting.php?success=saved');
     }
     // if fakulti or umum save button is selected 
     if (isset($_POST['btn_Umum_setting'])||isset($_POST['btn_Fstm_setting'])||isset($_POST['btn_Fsu_setting'])||isset($_POST['btn_Fpm_setting'])||isset($_POST['btn_Fppi_setting'])||isset($_POST['btn_Fp_setting'])) {
@@ -39,18 +46,11 @@
     // get election detail from DB
     $qr=mysqli_query($db,"SELECT * FROM election WHERE election_id ='$electionid'");
     if ($qr==false) {
-        echo "Query cannot been executed<br>";
+        echo "Failed to get election information<br>";
         echo "SQL error :".mysqli_error($db);
     }
     else
     $electiondetail=mysqli_fetch_array($qr);
-    
-    // get section record from DB
-    $qr= mysqli_query($db,"SELECT * FROM section ");
-    if ($qr==false) {
-        echo "Query cannot been executed<br>";
-        echo "SQL error :".mysqli_error($db);
-    }
 
 // to change string to date format (start time)
 $start = strtotime($electiondetail['start']); 
@@ -93,8 +93,14 @@ include "include/header.template.php";
              break;
          }
          // get total candidate from DB (for dropbox on section setting)
-         $get_ttl_candidate=mysqli_query($db,"SELECT s.section_name, s.max_vote, s.section_instrution, count(c.candidate_id)as ttl from candidate as c JOIN section as s ON c.section_id=s.section_id WHERE c.section_id='$section_id'");
-        $ttl_candidate=mysqli_fetch_array($get_ttl_candidate);
+         $query="SELECT s.section_name, s.max_vote, s.section_instrution,count(c.candidate_id)AS ttl 
+                 FROM candidate AS c 
+                 JOIN section AS s 
+                 ON c.section_id=s.section_id 
+                 WHERE c.section_id='$section_id' AND c.election_id='$electionid' ";
+
+         $get_ttl_candidate=mysqli_query($db,$query);
+         $ttl_candidate=mysqli_fetch_array($get_ttl_candidate);
     ?>
      <ul class="nav nav-pills">
               <li class="nav-item">
@@ -151,6 +157,9 @@ include "include/header.template.php";
                                 else
                                   echo " <option value='".$i."' >".$i." Candidate</option>";
                               }
+                              if (empty($ttl_candidate['ttl'])) {
+                                  echo " <option selected value='0'  >No Candidate</option>";
+                              }
                            ?>
                       </select>
                       </div>
@@ -168,17 +177,11 @@ include "include/header.template.php";
                 </div>
             </div>
         </div>
+
     </form>
     <?php }
 
     else{
-
-
-      if (isset($_GET['error'])) {
-        if ($_GET['error']=="endtime") {
-            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">Election end time already passed! Please change election end time<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';
-        }
-      }
 
       ?>
            <ul class="nav nav-pills">
@@ -205,6 +208,19 @@ include "include/header.template.php";
               </li>
             </ul>
             <hr> 
+            <?php 
+              if (isset($_GET['error'])) {
+                if ($_GET['error']=="endtime") {
+                    echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">Election end time already passed! Please change election end time<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';
+                }
+              }
+              if (isset($_GET['success'])) {
+                if ($_GET['success']=="saved") {
+                    echo '<div class="alert alert-success alert-dismissible fade show" role="success">Succesfully saved<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';
+                  # code...
+                }
+              }
+             ?>
        <!-- general setting card -->
        <div class="card o-hidden border-0 shadow-lg my-1"  >
         <div class="card-header py-3" >
@@ -220,19 +236,19 @@ include "include/header.template.php";
              <div class="form-row">
                 <div class="form-group col-md-7">
                     <label  for="title" >Title</label>
-                    <input name="txt_electionname" type="text"  class="form-control form-control-user" id="title" placeholder="Election Title" value="<?=$electiondetail['title']?>">
+                    <input name="txt_electionname" type="text"  class="form-control form-control" id="title" placeholder="Election Title" value="<?=$electiondetail['title']?>">
                  </div>
              </div>
              <!-- start date textbox -->
              <div class="form-row">
                <div class="form-group col-md-4">
                       <label for="starttime">Election Start</label>
-                      <input name="txt_start" type="datetime-local" class="form-control form-control-user" id="starttime" value="<?=$starttime?>">
+                      <input name="txt_start" type="datetime-local" class="form-control form-control" id="starttime" value="<?=$starttime?>" >
                    </div>
                      <!-- end date textbox -->
                      <div class="form-group col-md-4">
                          <label for="endtime">Election End</label>
-                         <input name="txt_end" type="datetime-local" class="form-control form-control-user" id="endtimes" value="<?=$endtime?>">
+                         <input name="txt_end" type="datetime-local" class="form-control form-control " id="endtimes" value="<?=$endtime?>" >
                      </div>
                  </div>
                  <hr>

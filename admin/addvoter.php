@@ -18,13 +18,17 @@ if (isset($_POST['btn_add_voter'])) {
     $data_in_DB = mysqli_query($db,"SELECT matric_no FROM voter WHERE matric_no='$votermatricno' ") or die(mysql_error());
     if (mysqli_num_rows($data_in_DB)==0) {
         // insert voter information in voter and login table
-        $querytovotertable="INSERT INTO voter  (email,voter_name,matric_no,faculty) VALUES('$voteremail','$votername','$votermatricno','$voterfaculty');INSERT INTO login (user_level,username,password) VALUES (2,'$voteremail',$votermatricno)  ";
+        $querytovotertable="INSERT INTO voter  (email,voter_name,matric_no,faculty) 
+                            VALUES('$voteremail','$votername','$votermatricno','$voterfaculty'); 
+                            INSERT INTO login (user_level,username) 
+                            VALUES (2,'$votermatricno')  ";
         $qr=mysqli_multi_query($db,$querytovotertable);
         if ($qr==false) {
-            echo "Query cannot been executed<br>";
+            echo "Failed to add voter<br>";
             echo "SQL error :".mysqli_error($db);
         }
-        header('Location: addvoter.php?succes=addvoter');
+        else
+            header('Location: addvoter.php?succes=addvoter');
     }
     else
       // if voter exist in DB
@@ -72,7 +76,7 @@ if (isset($_POST['btn_add_voter'])) {
         }
         if ($result==true) {
           // insert login detail into DB
-          $insert_login_detail = mysqli_query($db,"INSERT INTO login (user_level,username,password) VALUES (2,'$getData[0]','$getData[2]')");
+          $insert_login_detail = mysqli_query($db,"INSERT INTO login (user_level,username) VALUES (2,'$getData[2]')");
           if ($insert_login_detail==false) {
             echo "Failed to insert login detail into DB (import form)<br>";
             echo "SQL error :".mysqli_error($db);
@@ -106,12 +110,12 @@ include "include/header.template.php";
                     // error handling
                     if (isset($_GET['error'])) {
                       if ($_GET['error'] == "alreadyexist") {
-                        echo '<div class="alert alert-danger" role="alert">Already a voter!</div> ';
+                        echo '<div class="alert alert-danger" role="alert">Already a voter! <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';
                       }
                     }
                     if (isset($_GET['succes'])) {
                       if ($_GET['succes']=="addvoter") {
-                        echo '<div class="alert alert-success" role="alert">Succesfully add voter</div> ';
+                        echo '<div class="alert alert-success" role="alert">Succesfully add voter <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';
                           
                       }
                     }

@@ -39,7 +39,7 @@ if (isset($_GET['data'])) {
 }
 ?>
    <div class="container">
-
+      <div class="col-xl-12 col-lg-12 col-md-9 col-xs-12">
              <div class="card shadow mb-4">
 
             <div class="card-header py-3" >
@@ -84,6 +84,7 @@ if (isset($_GET['data'])) {
                   }
                 }
                ?>
+               <div class="table-responsive">
           <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
               <thead>
                 <tr>
@@ -130,6 +131,9 @@ if (isset($_GET['data'])) {
 ?>  
   </tbody>
 </table>
+<!-- close table responsive -->
+</div>
+</div>
 </div>
 </div>
 </div>
