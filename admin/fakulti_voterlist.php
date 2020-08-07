@@ -8,7 +8,6 @@ if(empty($_SESSION['id'])){
 
 include "../connection.php";
 
-
 $query="SELECT v.*,f.*
         FROM voter as v
         JOIN faculty as f 
@@ -21,7 +20,6 @@ if ($qr==false) {
     echo "Failed to get voterlist in fakulti<br>";
     echo "SQL error :".mysqli_error($db);
 }
-
 
 include "include/header.template.php";
 ?>

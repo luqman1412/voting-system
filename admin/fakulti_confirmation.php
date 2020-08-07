@@ -60,7 +60,7 @@ $voterid=$_GET['voter_id'];
 $query="SELECT voter_id, section_id from candidate WHERE voter_id= '$voterid' AND election_id = '$electionid' ";
 $qr=mysqli_query($db,$query);
 if ($qr==false) {
-    echo "Query cannot been executed<br>";
+    echo "Failed to check if voter already a candidate <br>";
     echo "SQL error :".mysqli_error($db);
   }
   $checkinDB=mysqli_fetch_array($qr);
