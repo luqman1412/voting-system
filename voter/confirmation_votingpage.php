@@ -7,29 +7,23 @@ $time=date('Y-m-d H:i:s');
 $pilihanumum=$_SESSION['umum'];
 // get pilihan fakulti 
 $pilihanfakulti=$_SESSION['fakulti'];
+// check if there is no candidate selected
 if (empty($pilihanumum)) {
 header('Location: votingpageumum.php?selection_empty');
 }
 elseif (empty($pilihanfakulti)) {
 header('Location: votingpagefakulti.php?selection_empty');
 }
-// print out pilihan (for test only)
-foreach ($pilihanfakulti as $key => $candidate_id) {
-    echo " fakulti candidate id: ".$candidate_id ;
-}
 
-foreach ($pilihanumum as $key => $candidate_id) {
-    echo " umum candidate id: ".$candidate_id ;
-}
 // get voter id, voter faculty_id & election id from session
 $voterid=$_SESSION['id'];
 $voterfaculty=$_SESSION['faculty'];
 $electionid=$_SESSION['electionid'];
 // check if voter already vote
-$alreadyvote_inDB=mysqli_query($db,"SELECT * FROM alreadyvote WHERE voter_id= '$voterid' ");
+$alreadyvote_inDB=mysqli_query($db,"SELECT * FROM alreadyvote WHERE voter_id= '$voterid' AND election_id= '$electionid' ");
 if(mysqli_num_rows($alreadyvote_inDB)>0){
   echo ("Your already vote<br>");
-  // header('Location: error_votingpage.php?error=alreadyvote');
+  header('Location: error_votingpage.php?error=alreadyvote');
 }
 // change time format to match with current times
 $endtime=date("Y-m-d H:i:s", strtotime($_SESSION['electionendtime']));
@@ -43,7 +37,7 @@ $endtime=date("Y-m-d H:i:s", strtotime($_SESSION['electionendtime']));
       echo "SQL error :".mysqli_error($db);
     }
     echo "election has ended";
-    // header("Location: error_votingpage.php?error=electionended");
+    header("Location: error_votingpage.php?error=electionended");
   }
   else{
    header("Refresh:30");
@@ -67,13 +61,13 @@ include 'include/header_votingpage.php'
             <div class="p-5">
               <div class="row">
                 <div class="col">
-                  <h3>candidate umum</h3>
+                  <h3>Candidate Umum</h3>
                     <form method="POST" action="insertvotingintoDB.php">
-                      <table class="table table-bordered">
+                    <div class="table-reponsive">
+                      <table class="table table-bordered table-fixed">
                         <tr>
                           <th class="th-sm" >Candidate ID</th>
-                          <th class="th-sm" >Name</th>
-                          <th class="th-sm" >Action</th>
+                          <th class="th-sm" >Candidate Name</th>
                         </tr>
                         <?php
                           // get umum candidate information from DB
@@ -94,21 +88,18 @@ include 'include/header_votingpage.php'
                         <tr>
                           <td><input name="umum<?=$key?>" type="text" readonly class="form-control-plaintext form-control-sm" value="<?=$candidate_id?>"></td>
                           <td><?=$name?></td>
-                           <td><button class="btn btn-info btn-circle btn-sm "><i class="fas fa-info-circle"></i></button> </td>
-
                         </tr>
                         <!-- close loop -->
                         <?php } ?>
                       </table>
+                    </div>
                 </div>
                       <div class="col">
                         <h3>candidate fakulti</h3>
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-fixed ">
                           <tr>
                             <th class="th-sm" >Candidate ID</th>
-                            <th class="th-sm" >Name</th>
-                            <th class="th-sm" >Action</th>
-
+                            <th class="th-sm" >Candidate Name</th>
                           </tr>
                           <?php
                             // get fakulti candidate information from DB
@@ -122,7 +113,7 @@ include 'include/header_votingpage.php'
                                       WHERE c.candidate_id='$candidate_id'";
                               $qr=mysqli_query($db,$query);
                               if ($qr==false) {
-                                  echo "Query cannot been executed<br>";
+                                  echo "Failed to get candidate information from fakulti section<br>";
                                   echo "SQL error :".mysqli_error($db);
                               }
                               $record=mysqli_fetch_array($qr);
@@ -131,8 +122,6 @@ include 'include/header_votingpage.php'
                           <tr>
                             <td><input name="<?=$record['name']?><?=$key?>" type="text" readonly class="form-control-plaintext form-control-sm" value="<?=$candidate_id?>"></td>            
                             <td><?=$name?></td>
-                            <td><button class="btn btn-info btn-circle btn-sm "><i class="fas fa-info-circle"></i></button> </td>
-
                           </tr>
                           <!-- close loop -->
                           <?php }?>

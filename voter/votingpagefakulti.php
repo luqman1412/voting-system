@@ -14,14 +14,12 @@ header("location:../index.php?error=alreadylogout");
 $voterid=$_SESSION['id'];
 $voterfaculty=$_SESSION['faculty'];
 $electionid=$_SESSION['electionid'];
-// print the voter id
-echo "voter id:". $voterid."<br>";
 
 // check if voter already vote
-$alreadyvote_inDB=mysqli_query($db,"SELECT * FROM alreadyvote WHERE voter_id= '$voterid' ");
+$alreadyvote_inDB=mysqli_query($db,"SELECT * FROM alreadyvote WHERE voter_id= '$voterid' AND election_id= '$electionid' ");
 if(mysqli_num_rows($alreadyvote_inDB)>0){
   echo ("Your already vote<br>");
-  // header('Location: error_votingpage.php?error=alreadyvote');
+  header('Location: error_votingpage.php?error=alreadyvote');
 }
 // change time format to match with current times
 $endtime=date("Y-m-d H:i:s", strtotime($_SESSION['electionendtime']));
@@ -35,17 +33,13 @@ $endtime=date("Y-m-d H:i:s", strtotime($_SESSION['electionendtime']));
       echo "SQL error :".mysqli_error($db);
     }
     echo "election has ended";
-    // header("Location: error_votingpage.php?error=electionended");
+    header("Location: error_votingpage.php?error=electionended");
   }
   else{
    header("Refresh:30");
   }
 
 $pilihanumum=$_SESSION['umum'];
-//print the umum selection 
-foreach ($pilihanumum as $indexarray => $datainarray) {
-    echo "key: ".$indexarray." value: ".$datainarray ."- ";
-}
 
 // get section instrution from DB
 $get_section_instruction=mysqli_query($db,"SELECT * FROM section WHERE section_id =$voterfaculty ");

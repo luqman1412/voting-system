@@ -50,7 +50,7 @@ else{
     }
 }
 // check if voter already vote
-$alreadyvote_inDB=mysqli_query($db,"SELECT * FROM alreadyvote WHERE voter_id= '$voterid' ");
+$alreadyvote_inDB=mysqli_query($db,"SELECT * FROM alreadyvote WHERE voter_id= '$voterid' AND election_id= '$electionid' ");
 if(mysqli_num_rows($alreadyvote_inDB)>0){
   echo ("Your already vote<br>");
   header('Location: error_votingpage.php?error=alreadyvote');

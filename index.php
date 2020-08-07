@@ -166,16 +166,18 @@ if (mysqli_num_rows($qr)==1) {
                 }
                 else if ($userlevel==2){
                     $get_voter_id=mysqli_query($db,"SELECT voter_id,voter_name,faculty FROM voter WHERE matric_no='$username'");
-                    $voter_id=mysqli_fetch_array($get_voter_id);
                     if($get_voter_id==false){
                         echo "Failed to find user <br>";
                         echo "SQL error :".mysqli_error($db);
                     }
-                    $_SESSION['id']=$voter_id['voter_id'];
-                    $_SESSION['name']=$voter_id['voter_name'];
-                    $_SESSION['faculty']=$voter_id['faculty'];
-                     header('Location: voter/votingpageumum.php');
-                    exit(); 
+                    else
+                      $voter_id=mysqli_fetch_array($get_voter_id);
+
+                      $_SESSION['id']=$voter_id['voter_id'];
+                      $_SESSION['name']=$voter_id['voter_name'];
+                      $_SESSION['faculty']=$voter_id['faculty'];
+                      header('Location: voter/votingpageumum.php');
+                      exit(); 
                 }
                 else
                   echo "Error on find user";
@@ -209,13 +211,12 @@ if (mysqli_num_rows($qr)==1) {
     elseif ($record['status']=='not register') {
       header("Location: index.php?error=notregister");
       exit();
-      
     }
     else
       echo " Error on status user";
 }
 else
-    header("Location: index.php?error=usernotfound");
+  header("Location: index.php?error=usernotfound");
 }
 include 'include/footer_login.php';
 ?>

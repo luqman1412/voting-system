@@ -2,7 +2,6 @@
 include('../connection.php');
 // get matric number from session
 $usermatric=$_SESSION['matric_no'];
-echo "matric no:".$usermatric;
 
 // check if btn_inserttoDB is clicked
 if (isset($_POST['btn_inserttoDB'])) {
@@ -25,7 +24,7 @@ if (isset($_POST['btn_inserttoDB'])) {
     else {
       echo "succes";
       $_SESSION['email']=$email;
-      header('Location: ../testmail.php');
+      header('Location: sendemail.php');
     }
   }
 }
@@ -47,14 +46,14 @@ if($qr==false){
 }
 // check the matric number in DB
 if (mysqli_num_rows($qr)==0) {
- header("Location: register.php?error=notfound");
+    header("Location: register.php?error=notfound");
+ exit();
 }
 else if (mysqli_num_rows($qr)==1){
     $record=mysqli_fetch_array($qr);
     $dbvoter_id=$record['voter_id'];
     $dbemail=$record['email'];
-    // assign voter id to session
-  }
+}
 
 ?> 
 <!DOCTYPE html>
