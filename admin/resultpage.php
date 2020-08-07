@@ -162,6 +162,8 @@ include "include/launchelectionheader.php";
       <button class="btn btn-primary">End Election</button>
     </div>
 
+
+
   </div>
 </div>
 <?php

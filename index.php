@@ -217,5 +217,5 @@ if (mysqli_num_rows($qr)==1) {
 else
     header("Location: index.php?error=usernotfound");
 }
-include 'include/footer.template.php';
+include 'include/footer_login.php';
 ?>
