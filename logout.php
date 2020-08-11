@@ -1,5 +1,6 @@
-<?php 
-session_start();
+<?php session_start();
+
 session_destroy();
-header('Location: index.php?succes=successfullylogout');
+// redirect to login page
+header('Location: index.php?success=successfullylogout');
 ?>
