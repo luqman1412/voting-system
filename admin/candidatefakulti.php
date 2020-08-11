@@ -93,92 +93,93 @@ if ($qr==false) {
 
 include "include/header.template.php";
 ?>
-        <div class="container-fluid">
+<div class="container-fluid">
+  <div class="card shadow mb-4">
+    <div class="card-header py-3" >
+      <div class="d-sm-flex align-items-center justify-content-between mb-1">
+        <h5 class="m-0  font-weight-bold text-primary">Calon Fakulti</h5>
+        <div class="pull-right"><a href="fakulti_voterlist.php"><button type="button" class="btn btn-primary">Add Candidates</button></a></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <ul class="nav nav-pills">
+      <li class="nav-item">
+        <a class="nav-link <?=$all_status?> " href="candidatefakulti.php">All</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link <?=$fstm_status?>" href="candidatefakulti.php?data=fstm">FSTM</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link <?=$fpm_status?> " href="candidatefakulti.php?data=fpm">FPM</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link <?=$fppi_status?> " href="candidatefakulti.php?data=fppi">FPPI</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link <?=$fsu_status?> " href="candidatefakulti.php?data=fsu">FSU</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link <?=$fp_status?> " href="candidatefakulti.php?data=fp">FP</a>
+      </li>
+    </ul>
+    <hr>
+    <?php 
+      if (isset($_GET['success'])) {
+        if ($_GET['success']=="addcandidate") {
+            echo '<div class="alert alert-success" role="success">Succesfully add candidate !</div> ';
+        }
+      }
+       ?>
+      <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            <th class="th-sm">Candidate ID
+            </th>
+            <th class="th-sm">Section 
+            </th>
+            <th class="th-sm">Name
+            </th>
+            <th class="th-sm">Fakulti
+            <th >Action
+            </th>
 
-             <div class="card shadow mb-4">
-
-            <div class="card-header py-3" >
-              <div class="d-sm-flex align-items-center justify-content-between mb-1">
-                <h5 class="m-0  font-weight-bold text-primary">Calon Fakulti</h5>
-                <div class="pull-right"><a href="fakulti_voterlist.php"><button type="button" class="btn btn-primary">Add Candidates</button></a></div>
-              </div>
-           </div>
-            <div class="card-body">
-              <ul class="nav nav-pills">
-              <li class="nav-item">
-                <a class="nav-link <?=$all_status?> " href="candidatefakulti.php">All</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link <?=$fstm_status?>" href="candidatefakulti.php?data=fstm">FSTM</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link <?=$fpm_status?> " href="candidatefakulti.php?data=fpm">FPM</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link <?=$fppi_status?> " href="candidatefakulti.php?data=fppi">FPPI</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link <?=$fsu_status?> " href="candidatefakulti.php?data=fsu">FSU</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link <?=$fp_status?> " href="candidatefakulti.php?data=fp">FP</a>
-              </li>
-            </ul>
-            <hr>
-            <?php 
-              if (isset($_GET['success'])) {
-                if ($_GET['success']=="addcandidate") {
-                    echo '<div class="alert alert-success" role="success">Succesfully add candidate !</div> ';
-                }
-              }
-               ?>
-              <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                <thead>
-                  <tr>
-                    <th class="th-sm">Candidate ID
-                    </th>
-                    <th class="th-sm">Section 
-                    </th>
-                    <th class="th-sm">Name
-                    </th>
-                    <th class="th-sm">Fakulti
-                    <th >Action
-                    </th>
-
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-              while ($rekod=mysqli_fetch_array($qr)){//redo to other records
-              ?>
-                  <tr>
-                    <td><?=$rekod['candidate_id']?></td>
-                    <td><?=$rekod['section_name']?></td>
-                    <td><?=$rekod['voter_name']?></td>
-                    <td><?=$rekod['name']?></td>
-                    <td>
-                      <a href="deletecandidate.php?candidate_id=<?=$rekod['candidate_id']?>" class="btn btn-danger btn-circle btn-sm"> <i class="fas fa-trash"></i>
-                    </td>
-                  </tr>
-                <?php
-                }//end of records
-              ?>
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <th >Candidate ID
-                    </th>
-                    <th >Section 
-                    </th>
-                    <th >Name
-                    </th>
-                    <th >Fakulti
-                    </th>
-                    <th >Action
-                    </th>
-                  </tr>
-                </tfoot>
-              </table>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+      while ($rekod=mysqli_fetch_array($qr)){//redo to other records
+      ?>
+          <tr>
+            <td><?=$rekod['candidate_id']?></td>
+            <td><?=$rekod['section_name']?></td>
+            <td><?=$rekod['voter_name']?></td>
+            <td><?=$rekod['name']?></td>
+            <td>
+              <a href="deletecandidate.php?candidate_id=<?=$rekod['candidate_id']?>" class="btn btn-danger btn-circle btn-sm"> <i class="fas fa-trash"></i>
+            </td>
+          </tr>
+        <?php
+        }//end of records
+      ?>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th >Candidate ID
+            </th>
+            <th >Section 
+            </th>
+            <th >Name
+            </th>
+            <th >Fakulti
+            </th>
+            <th >Action
+            </th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
 <?php
 include "include/footer.template.php";
 ?>	

@@ -3,8 +3,7 @@ $electionid=$_SESSION['electionid'];
 
 // get current local time
 date_default_timezone_set('Asia/Kuala_Lumpur');
-$time=date('Y-m-d H:i:s');
-echo "this is current time : $time<br>";
+$currenttime=date('Y-m-d H:i:s');
 
 //If your session isn't valid, it returns you to the login screen for protection
 if(empty($_SESSION['id'])){
@@ -23,7 +22,7 @@ include "../connection.php";
     $start_time=$electiondetail['start'];
 
     // check if election reach end time
-    if($time>= "$endtime" ){
+    if($currenttime>= "$endtime" ){
       $endtime_valid="invalid";
       $endtime_message='<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-circle"></i> <b>Warning: </b> Election time has ended. Please change the times </div>';
       }
@@ -33,7 +32,7 @@ include "../connection.php";
       }
     // get start time
         // check if election start time will start start after launch
-    if($time>= "$start_time" ){
+    if($currenttime>= "$start_time" ){
       $starttime_valid="valid";
       $starttime_message='<div class="alert alert-warning" role="alert"><i class="fas fa-exclamation-triangle"></i> <b>Important: </b> This election will start automatically start after launch </div>';
       }
@@ -63,7 +62,7 @@ include "include/header.template.php";
           <div class="card shadow mb-4">
             <div class="card-header py-3" >
               <div class="d-sm-flex align-items-center justify-content-between mb-1">
-               <h5 class="m-0  font-weight-bold text-primary">vote </h5>     
+               <h5 class="m-0  font-weight-bold text-primary">Candidate </h5>     
               </div>
             </div>
             <div class="card-body">
@@ -103,6 +102,8 @@ include "include/header.template.php";
               $candidate_status="is-valid";
               $candidate_message="";
             }
+            // check for section id for redirect
+            $redirectname_addcandidate= ($section_id==0 ? "candidateumum" : "candidatefakulti" );
  ?>
                <div class="row">
                 <div class="col-1 p-2">
@@ -124,7 +125,10 @@ include "include/header.template.php";
                   <label>Candidate </label>
                 </div>
                 <div class="col-1 p-2">
-                  <a href="adminsetting.php?section=<?=$section['section_id']?>"><button class="btn btn-primary">Edit </button></a>
+                  <a href="adminsetting.php?section=<?=$section['section_id']?>"><button class="btn btn-primary">Edit  </button></a>
+                </div>
+                <div class="col-1 p-2">
+                  <a href="<?=$redirectname_addcandidate?>.php"><button class="btn btn-primary">Add  </button></a>
                 </div>
                </div>
 
@@ -133,11 +137,7 @@ include "include/header.template.php";
               <hr>
               <?php 
                 echo "$candidate_message";
-                if (!empty($candidate_message)) {
-                   $btn_launch_status="disabled";
-                 }
-                 else
-                   $btn_launch_status=" ";
+                $btn_launch_status = (!empty($candidate_message)? "disabled" : " " );
                ?>
                 <div class="p-2" align="right">
                   <a href="launchmenu.php?"><button class="btn btn-primary">Back</button></a>
