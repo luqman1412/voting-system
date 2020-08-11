@@ -1,4 +1,10 @@
-<?php session_start(); ?>
+<?php session_start(); 
+$matric_no=$_SESSION['matric_no'];
+
+if (empty($matric_no)) {
+  header('Location: index.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,24 +36,34 @@
           <div class="card-header py-3" align="center">
             <h5 class="m-0  font-weight-bold text-primary">Please set your new password</h5>
           </div>
-          <div class="card-body p-1" >        
-          <div class="p-5">
+          <div class="card-body p-5" >        
             <?php 
                 if (isset($_GET['error'])) {
                   if ($_GET['error']=="emptyfield") {
-                    echo '<div class="alert alert-danger" role="alert">Please set your new password<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';
+                    echo '<div class="alert alert-danger" role="alert">Please set your new password</div> ';
+                  }
+                  elseif (isset($_GET['error'])=="notsame") {
+                    echo '<div class="alert alert-danger" role="alert">Your password are not same</div> ';
                   }
                 }
                ?>
           <!-- form start -->
           <form class="user" method="POST" action="newpasswordpage.php">
-            <div align="center" class="form-group row">
-              
-              <label for="newpassword" class="col-sm-4 col-form-label">New password: </label>
+
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label ">New password: </label>
               <div class="col-sm-8">
                 <input name="txt_newpassword" type="password" class="form-control form-control-user" id="newpassword" placeholder="Please insert your new password">
               </div>
             </div>
+
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label">Repeat Password: </label>
+              <div class="col-sm-8">
+                <input name="txt_repeatpassword" type="password" class="form-control form-control-user" id="passwordrepeat" placeholder="Repeat your new password">
+              </div>
+            </div>
+
             <hr>
             <div align="center">
               <div class="form-group col-xl-6">
@@ -55,7 +71,6 @@
               </div>
             </div>
           </form>
-          </div>
           </div>
         </div>
       </div>
@@ -69,22 +84,25 @@
 include "connection.php";
 if (isset($_POST['btn_submit_newpassword'])) {
   $newpassword=$_POST['txt_newpassword'];
-  $matric_no=$_SESSION['matric_no'];
-
+  $repeatpassword =$_POST['txt_repeatpassword'];
   // check if password is inserted if not return error message
-  if (empty($newpassword)) {
+  if (empty($newpassword) || empty($repeatpassword)) {
     header('Location: newpasswordpage.php?error=emptyfield');
   }
-  else{
+  elseif ($newpassword!=$repeatpassword) {
+    header('Location: newpasswordpage.php?error=notsame');
+  }
+  elseif ($newpassword==$repeatpassword) {
     // update password on DB
     $qr=mysqli_query($db,"UPDATE login SET password ='$newpassword',OTP=0 WHERE username ='$matric_no' ");
     if($qr==false){
       echo "Failed update new password <br>";
       echo "SQL error :".mysqli_error($db);
     }
-    else
+    else{
       header('Location: index.php?success=passwordchange');
+      exit();
+    }
   }
 }
-
-include 'admin/include/footer.template.php'; ?>
+include 'include/footer_login.php'; ?>
