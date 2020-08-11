@@ -1,6 +1,6 @@
-<?php
-    session_start();
+<?php session_start();
     include "../connection.php";
+    include "../alertfunction.php";
     // get election id from session
     $electionid=$_SESSION['electionid'];
     //If your session isn't valid, it returns you to the login screen for protection
@@ -10,7 +10,7 @@
     }    
     // get current local time
     date_default_timezone_set('Asia/Kuala_Lumpur');
-    $time=date('Y-m-d H:i:s');
+    $currenttime=date('Y-m-d H:i:s');
 
     // check if save setting button is clicked
     if (isset($_POST['btn_general_setting'])) {
@@ -18,7 +18,10 @@
         $newelectionstart=$_POST['txt_start'];
         $newelectionend=$_POST['txt_end'];
         // check data validation
-
+        if ($currenttime>$newelectionend) {
+         header('Location: adminsetting.php?error=endtime');
+         exit();
+        }
         // update data in db
         $query="UPDATE election SET title='$newelectionname',start='$newelectionstart',end='$newelectionend' WHERE election_id='$electionid' ";
         $qr=mysqli_query($db,$query);
@@ -211,13 +214,12 @@ include "include/header.template.php";
             <?php 
               if (isset($_GET['error'])) {
                 if ($_GET['error']=="endtime") {
-                    echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">Election end time already passed! Please change election end time<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';
+                    alertwithclose("Election end time already passed! Please change election end time");
                 }
               }
               if (isset($_GET['success'])) {
                 if ($_GET['success']=="saved") {
-                    echo '<div class="alert alert-success alert-dismissible fade show" role="success">Succesfully saved<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';
-                  # code...
+                    successwithclose("Succesfully saved");
                 }
               }
              ?>
