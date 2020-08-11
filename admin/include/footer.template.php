@@ -1,5 +1,5 @@
   <!-- Footer -->
-      <footer class="sticky-footer bg-white">
+      <footer class="sticky-footer bg-white ">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
             <span>Copyright &copy; Kuis e-voting system</span>
@@ -13,8 +13,6 @@
     <!-- End of Content Wrapper -->
   </div>
   <!-- End of Page Wrapper -->
-
-
 
   <!-- Bootstrap core JavaScript-->
   <script src="../vendor/jquery/jquery.min.js"></script>

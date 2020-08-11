@@ -24,84 +24,85 @@ if ($qr==false) {
 
 include "include/header.template.php";
 ?>
-        <div class="container-fluid">
+<div class="container-fluid">
+  <div class="card shadow mb-4">
+    <div class="card-header py-3" >
+      <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h5 class="m-0  font-weight-bold text-primary">Sila pilih calon</h5>
+      </div>
+    </div>
+    <div class="card-body">
+      <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+        <p id="demo"></p>
 
-             <div class="card shadow mb-4">
+         <?php  if (isset($_GET['error'])) {
+              if ($_GET['error'] == "alreadyumumcandidate") {
+                echo '<div class="alert alert-danger" role="alert">Voter already umum candidate! Please choose another voter</div> ';
+              }
+              elseif ($_GET['error'] == "alreadyfacultycandidate") {
+                echo '<div class="alert alert-danger" role="alert">Voter already faculty candidate! Please choose another voter</div> ';
+              }
+              elseif ($_GET['error'] == "alreadycandidate") {
+                echo '<div class="alert alert-danger" role="alert">Voter already candidate! Please choose another voter</div> ';
+              }
 
-            <div class="card-header py-3" >
-              <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h5 class="m-0  font-weight-bold text-primary">Sila pilih calon</h5>
-              </div>
-           </div>
-            <div class="card-body">
-              <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                <p id="demo"></p>
+            }
+         ?>
+        <thead>
+          <tr>
+            <th class="th-sm">Voter ID
+            </th>
+            <th class="th-sm">Email
+            </th>
+            <th class="th-sm">Name
+            </th>
+            <th class="th-sm">Matric No
+            </th>
+            <th class="th-sm">Faculty
+            </th>
+            <th >Action
+            </th>
 
-                 <?php  if (isset($_GET['error'])) {
-                      if ($_GET['error'] == "alreadyumumcandidate") {
-                        echo '<div class="alert alert-danger" role="alert">Voter already umum candidate! Please choose another voter</div> ';
-                      }
-                      elseif ($_GET['error'] == "alreadyfacultycandidate") {
-                        echo '<div class="alert alert-danger" role="alert">Voter already faculty candidate! Please choose another voter</div> ';
-                      }
-                      elseif ($_GET['error'] == "alreadycandidate") {
-                        echo '<div class="alert alert-danger" role="alert">Voter already candidate! Please choose another voter</div> ';
-                      }
-
-                    }
-                 ?>
-  <thead>
-    <tr>
-      <th class="th-sm">Voter ID
-      </th>
-      <th class="th-sm">Email
-      </th>
-      <th class="th-sm">Name
-      </th>
-      <th class="th-sm">Matric No
-      </th>
-      <th class="th-sm">Faculty
-      </th>
-      <th >Action
-      </th>
-
-    </tr>
-  </thead>
-  <tbody>
-    <?php
-while ($rekod=mysqli_fetch_array($qr)){//redo to other records
-?>
-    <tr>
- <td><?=$rekod['voter_id']?></td>
- <td><?=$rekod['email']?></td>
- <td><?=$rekod['voter_name']?></td>
- <td><?=$rekod['matric_no']?></td>
- <td><?=$rekod['faculty']?></td>
-      <td>
-        <a href="umum_confirmation.php?voter_id=<?=$rekod['voter_id']?>&section=1">  <button type="button" class="btn btn-primary btn-rounded btn-sm my-0"> Add </button></a>
-      </td>
-    </tr>
-  <?php
-  }//end of records
-?>
-  </tbody>
-  <tfoot>
-    <tr>
-      <th>Voter ID
-      </th>
-      <th>Email
-      </th>
-      <th>Name
-      </th>
-      <th>Matric No
-      </th>
-      <th>Faculty
-      </th>
-      <th >Action
-      </th>
-    </tr>
-  </tfoot>
-</table>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+      while ($rekod=mysqli_fetch_array($qr)){//redo to other records
+      ?>
+          <tr>
+       <td><?=$rekod['voter_id']?></td>
+       <td><?=$rekod['email']?></td>
+       <td><?=$rekod['voter_name']?></td>
+       <td><?=$rekod['matric_no']?></td>
+       <td><?=$rekod['faculty']?></td>
+            <td>
+              <a href="umum_confirmation.php?voter_id=<?=$rekod['voter_id']?>&section=1">  <button type="button" class="btn btn-primary btn-rounded btn-sm my-0"> Add </button></a>
+            </td>
+          </tr>
+        <?php
+        }//end of records
+      ?>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>Voter ID
+            </th>
+            <th>Email
+            </th>
+            <th>Name
+            </th>
+            <th>Matric No
+            </th>
+            <th>Faculty
+            </th>
+            <th >Action
+            </th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
 <?php
 include "include/footer.template.php";
 ?>	

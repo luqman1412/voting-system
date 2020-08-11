@@ -134,6 +134,7 @@ include "include/header.template.php";
             </div>
             <!-- end center element -->
             </div>
+            
 <?php
 include "include/footer.template.php";
 
