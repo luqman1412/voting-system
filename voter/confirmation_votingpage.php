@@ -95,7 +95,7 @@ include 'include/header_votingpage.php'
                     </div>
                 </div>
                       <div class="col">
-                        <h3>candidate fakulti</h3>
+                        <h3>Candidate Fakulti</h3>
                         <table class="table table-bordered table-fixed ">
                           <tr>
                             <th class="th-sm" >Candidate ID</th>

@@ -21,24 +21,27 @@ include "../connection.php";
     $endtime=$electiondetail['end'];
     $start_time=$electiondetail['start'];
 
-    // check if election reach end time
+    // default value for error message
+    $message=array();
+    $endtime_valid="valid";
+    $starttime_valid="valid";
+    // check election time
+
     if($currenttime>= "$endtime" ){
       $endtime_valid="invalid";
-      $endtime_message='<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-circle"></i> <b>Warning: </b> Election time has ended. Please change the times </div>';
+      array_push($message,'<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-circle"></i> <b>Warning: </b> Election time has ended. Please change the times </div>');
+
       }
-    else{
-      $endtime_valid="valid";
-      $endtime_message='';
-      }
-    // get start time
-        // check if election start time will start start after launch
-    if($currenttime>= "$start_time" ){
+    elseif($currenttime>= "$start_time" ){
       $starttime_valid="valid";
-      $starttime_message='<div class="alert alert-warning" role="alert"><i class="fas fa-exclamation-triangle"></i> <b>Important: </b> This election will start automatically start after launch </div>';
+      array_push($message,'<div class="alert alert-warning" role="alert"><i class="fas fa-exclamation-triangle"></i> <b>Important: </b> This election will start automatically start after launch </div>');
+
       }
-    else{
-       $starttime_message='';
+    if ($start_time>= "$endtime") {
+      $starttime_valid="invalid";
+      array_push($message,'<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-circle"></i> <b>Warning: </b> Election start time is over than election end time</div>');
     }
+
 
 // to change string to date format (start time)
 $start = strtotime($electiondetail['start']); 
@@ -55,7 +58,7 @@ include "include/header.template.php";
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Launch Review</h1>
           </div>
-      <div class="col-xl-10 col-lg-12 col-md-9">
+      <div class="col-xl-12 col-lg-12 col-md-9">
          
 <?php  if (isset($_GET['page2'])) { ?>
 
@@ -118,7 +121,7 @@ include "include/header.template.php";
                 <div class="col-1 p-2">
                   <label>per </label>
                 </div>
-                <div class="col-2 p-2">
+                <div class="col-1 p-2">
                 <input class="form-control <?=$candidate_status?>" type="text" name="ttl_umum" value="<?=$ttl_candidate['ttl']?>" readonly>
                 </div>
                 <div class="col-2 p-2">
@@ -127,14 +130,14 @@ include "include/header.template.php";
                 <div class="col-1 p-2">
                   <a href="adminsetting.php?section=<?=$section['section_id']?>"><button class="btn btn-primary">Edit  </button></a>
                 </div>
-                <div class="col-1 p-2">
-                  <a href="<?=$redirectname_addcandidate?>.php"><button class="btn btn-primary">Add  </button></a>
+                <div class="col-3 p-2">
+                  <a href="<?=$redirectname_addcandidate?>.php"><button class="btn btn-primary">Add Candidate</button></a>
                 </div>
                </div>
 
 <?php  //close loop         
             } ?>  
-              <hr>
+              <hr>  
               <?php 
                 echo "$candidate_message";
                 $btn_launch_status = (!empty($candidate_message)? "disabled" : " " );
@@ -147,6 +150,33 @@ include "include/header.template.php";
           </div>
 <?php 
 // close page 2
+  }
+  elseif (isset($_GET['page3'])) {
+?>
+<div class="card shadow mb-4">
+            <div class="card-header py-3" >
+              <div class="d-sm-flex align-items-center justify-content-between mb-1">
+               <h5 class="m-0  font-weight-bold text-primary">Term</h5>     
+              </div>
+            </div>
+            <div class="card-body">
+                <div class="form-row ">
+                <div class="col">
+                <h5>You will not allowed to change this setting after launced</h5><br>
+                <p>1. add,edit or delete voter
+                <br>2. add,edit or delete candidate
+                <br>3. change the election start date and end date</p>
+                </div>
+                </div>
+                
+                <hr>
+                <div class="p-2" align="right">
+                  <a href="electionlaunch.php"><button class="btn btn-primary" >Launch</button></a>
+                </div>
+            </div>
+          </div>
+
+<?php
   }
   else{
   ?>
@@ -182,17 +212,22 @@ include "include/header.template.php";
                     <div class="invalid-feedback">
                     Election end time has passed
                     </div>
+                    <div class="valid-feedback">
+                    Election end time look good
+                    </div> 
                     </div>
                 </div>
 
                 <hr>
-                <!-- message -->
-                <div>
-                  <?=$starttime_message?>
-                  <?=$endtime_message?>
-                </div>
                 <?php 
-                if (!empty($endtime_message)) {
+                // dislplay error message
+                echo "<div>";
+                  foreach ($message as $key=>$value){
+                    echo "$value <br>";
+                  } 
+                echo "</div>";
+                
+                if (!empty($message)) {
                    $button_next_status="disabled";
                  }
                  else
