@@ -11,7 +11,7 @@ $query="SELECT * FROM voter";
 
 $qr=mysqli_query($db,$query);
 if ($qr==false) {
-    echo "Query cannot been executed<br>";
+    echo "Failed to get all voter<br>";
     echo "SQL error :".mysqli_error($db);
 }
 

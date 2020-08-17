@@ -96,7 +96,9 @@ if (isset($_GET['success'])) {
                 <div class="p-5">
                 	<h4><?=$error_message?> </h4>
                 	<br>
-                	<h5>Your will logout in 5 second </h5>
+                  <h5>Your will logout in 5 second </h5>
+                  <h5>or</h5>
+                  <h5><a href="../logout.php">Log out Now</a></h5>
 
                 </div>
           </div>

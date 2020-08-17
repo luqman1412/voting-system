@@ -49,7 +49,7 @@ $section_instrution_maxvote=mysqli_fetch_array($get_section_instruction);
 if(isset($_POST['btn_submit_vote'])) {
     // check in no candidate is selected
     if (empty($_POST['fakulti_candidate_selected'])) {
-        // header("Location: votingpagefakulti.php?error=selection_empty");
+        header("Location: votingpagefakulti.php?error=selection_empty");
     }
     // check if number of candidate > max vote
     elseif (count($_POST['fakulti_candidate_selected'])>$section_instrution_maxvote['max_vote']) {
