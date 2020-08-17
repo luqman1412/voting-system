@@ -46,7 +46,9 @@ if (isset($_POST['btn_add_voter'])) {
         $file = fopen($filename, "r");
         // to skip the 1st row
         fgetcsv($file);
-
+          $duplicate=0;
+          $voteradded=0;
+          $totalvoter=-10;
           while (($getData = fgetcsv($file, 10000, ",")) !== FALSE){ 
             switch ($getData[3]) {
               case 'fstm':
@@ -68,25 +70,37 @@ if (isset($_POST['btn_add_voter'])) {
                 $getData[3]="0";
                 break;
             }
+            $totalvoter++;
+            // check for existing voter and skip it
+            $existing_voter=mysqli_query($db,"SELECT matric_no FROM voter WHERE matric_no = '$getData[2]'");
+            if (mysqli_num_rows($existing_voter)>0) {
+              $duplicate++;
+              continue;
+              }
             // insert voter information into DB
-        $sql = "INSERT into voter (voter_id,email,voter_name,matric_no,faculty)VALUES (NULL,'$getData[0]','$getData[1]','$getData[2]','$getData[3]') ";
-        $result = mysqli_query($db, $sql);
-        if(!isset($result)){
-          header("Location: addvoter.php?error=failedtosubmit");
-        }
-        if ($result==true) {
-          // insert login detail into DB
-          $insert_login_detail = mysqli_query($db,"INSERT INTO login (user_level,username) VALUES (2,'$getData[2]')");
-          if ($insert_login_detail==false) {
-            echo "Failed to insert login detail into DB (import form)<br>";
-            echo "SQL error :".mysqli_error($db);
-          }
-          else
-            header('Location:voterlist.php?succes=inserted');
-        }
+            $sql = "INSERT into voter (voter_id,email,voter_name,matric_no,faculty)VALUES (NULL,'$getData[0]','$getData[1]','$getData[2]','$getData[3]') ";
+            $result = mysqli_query($db, $sql);
+            if(!isset($result)){
+              header("Location: addvoter.php?error=failedtosubmit");
+              exit();
+            }
+            if ($result==true) {
+              // insert login detail into DB
+              $insert_login_detail = mysqli_query($db,"INSERT INTO login (user_level,username) VALUES (2,'$getData[2]')");
+              if ($insert_login_detail==false) {
+                echo "Failed to insert login detail into DB (import form)<br>";
+                echo "SQL error :".mysqli_error($db);
+              }
+              $voteradded++;
+            }
         
            }
            fclose($file); 
+           if ($totalvoter==$duplicate) {
+           header('Location: voterlist.php?error=duplicate');
+           }
+           else
+           header('Location: voterlist.php?success=inserted&duplicate='.$duplicate.'&added='.$voteradded.'&totalvoter='.$totalvoter);
      }
   }
   else

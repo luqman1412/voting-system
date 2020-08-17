@@ -100,11 +100,20 @@ include "include/header.template.php";
             // succes message
             if (isset($_GET['success'])) {
                 if ($_GET['success'] == "inserted") {
-                    echo '<div class="alert alert-success" role="alert">Succesfully add voter!</div>';
+                   $voterduplicate=$_GET['duplicate'];
+                   $voteradded=$_GET['added'];
+                   $totalvoter=$_GET['totalvoter'];
+                    echo '<div class="alert alert-success" role="alert">Succesfully add '.$voteradded.' voter! ( there are: '. $voterduplicate.' duplicate voter. total = '.$totalvoter.')</div>';
                 }
                 elseif ($_GET['success'] == "deleted") {
                     echo '<div class="alert alert-danger" role="alert">Voter has been deleted!</div>';
                 }
+            }
+            elseif (isset($_GET['error'])) {
+              if ($_GET['error']=="duplicate") {
+                echo '<div class="alert alert-danger" role="alert">All the voter already added !</div>';
+                
+              }
             }
            ?>
       <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
