@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php session_start(); 
+include '../alertfunction.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +12,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Test register</title>
+  <title>Kuis E-voting System Register</title>
 
   <!-- Custom fonts for this template-->
   <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -39,6 +41,15 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Insert your matric number for verification!</h1>
                   </div>
+                  <?php 
+                if (isset($_GET['error'])) {
+                  if ($_GET['error']=="notfound") {
+                    alertwithclose("Matric number did not exist!");
+                  } elseif ($_GET['error']=="emptyfield") {
+                    alertwithclose("Please fill all the field");
+                  }
+                }
+               ?>
                   <form class="user" method="POST" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>">
                     <div class="form-group">
                       <input name="txt_matric_no" type="text" class="form-control form-control-user" id="matric_no" aria-describedby="matric_no" placeholder="Enter Your matric number...">
@@ -78,7 +89,7 @@ if (isset($_POST['btn_submit_matric_no'])) {
   $matric_no=$_POST['txt_matric_no'];
   // check if matric_no is empty
   if (empty($matric_no)) {
-    header('Location: register.php?error=emptyfield');
+    header('Location: index.php?error=emptyfield');
     exit();
   }
   // check if student already redister
@@ -97,7 +108,7 @@ if (isset($_POST['btn_submit_matric_no'])) {
   }
   // check the matric number in DB
   if (mysqli_num_rows($qr)==0) {
-      header("Location: register.php?error=notfound");
+      header("Location: index.php?error=notfound");
       exit();
   }
   else if (mysqli_num_rows($qr)==1){
