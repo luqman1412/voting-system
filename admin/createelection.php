@@ -127,7 +127,7 @@ if (isset($_POST['btn_submit_createelection'])) {
                             } 
                             else if ($_GET['error']=="pastendtime") {
                               $default_electionname=$_GET['elecname'];
-                              echo '<div class="alert alert-danger" role="alert">Election time is pasted!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';
+                              echo '<div class="alert alert-danger" role="alert">Election time has passed!<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div> ';
                             }
                             else if ($_GET['error']=="samestartandend") {
                               $default_electionname=$_GET['elecname'];

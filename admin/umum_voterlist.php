@@ -74,7 +74,7 @@ include "include/header.template.php";
        <td><?=$rekod['email']?></td>
        <td><?=$rekod['voter_name']?></td>
        <td><?=$rekod['matric_no']?></td>
-       <td><?=$rekod['faculty']?></td>
+       <td><?=$rekod['name']?></td>
             <td>
               <a href="umum_confirmation.php?voter_id=<?=$rekod['voter_id']?>&section=1">  <button type="button" class="btn btn-primary btn-rounded btn-sm my-0"> Add </button></a>
             </td>

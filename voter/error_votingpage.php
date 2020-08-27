@@ -1,5 +1,12 @@
 <?php session_start();
 
+//If your session isn't valid, it returns you to the login screen for protection
+if(empty($_SESSION['id'])){
+  echo " session id not exsit";
+  header("location:../index.php?error=alreadylogout");
+  exit();
+}
+
 if (isset($_GET['error'])) {
 	$header_message="Sorry..";
 	if ($_GET['error']=="electionended") {

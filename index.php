@@ -86,7 +86,7 @@
                   </form>
                   <hr>
                   <div class="text-center">
-                    <a class="small" href="forgot-password/">Forgot Password?</a>
+                    <a class="small" href="forgot-password/forgot_password.php">Forgot Password?</a>
                   </div>
                   <div class="text-center">
                     <a class="small" href="register/">Register as Voter!</a>
