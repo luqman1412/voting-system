@@ -100,6 +100,7 @@ if (isset($_POST['btn_submit_newpassword'])) {
       echo "SQL error :".mysqli_error($db);
     }
     else{
+      session_destroy();
       header('Location: index.php?success=passwordchange');
       exit();
     }
