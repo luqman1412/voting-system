@@ -1,4 +1,12 @@
-<?php session_start(); ?>
+<?php session_start();
+  $matricno=$_SESSION['matric_no'];
+  
+  // check if user authorised
+if (empty($matricno)) {
+  header('Location: index.php?error=notauthorised');
+  exit();
+}
+ ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,8 +54,13 @@
                   // error handling
                     if (isset($_GET['success'])) {
                       if ($_GET['success'] == "emailsended") {
-                        alertwithclose("We have send an verification code to your student email");
+                        successwithclose("We have send an verification code to your student email");
                       } 
+                    }
+                    elseif (isset($_GET['error'])) {
+                      if ($_GET['error']=="wrongcode") {
+                        alertwithclose("Your Verification is not match. Please Try again");
+                      }
                     }
                 ?>
                   <form class="user" method="POST" action="<?=$_SERVER['PHP_SELF'];?>">
@@ -85,11 +98,11 @@
 </html>
 <?php
 if (isset($_POST['btn_verify']) ) {
+    // get token and hash using md5
+    $verifypin=md5($_POST['txt_verification_code']);
 
     require '../connection.php';
 
-    $verifypin=$_POST['txt_verification_code'];
-    $matricno=$_SESSION['matric_no'];
     $sql= "SELECT * FROM resetpassword WHERE matric_no = '$matricno' ";
     $qr = mysqli_query($db,$sql);
     if($qr==false){
@@ -105,7 +118,7 @@ if (isset($_POST['btn_verify']) ) {
     }
     $record= mysqli_fetch_array($qr);
 
-    if ($matricno = $record['reset_token']) {
+    if ($verifypin == $record['reset_token']) {
       header('Location: ../newpasswordpage.php');
     }
     else

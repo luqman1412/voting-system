@@ -22,14 +22,15 @@ if (isset($_POST['btn_resetpassword'])) {
      // delete request record 
     $deleterecord= mysqli_query($db,"DELETE FROM resetpassword WHERE matric_no = $matricno");
     if($deleterecord==false){
-      echo "Failed to delete student from reset password<br>";
+      echo "Failed to delete request reset password record<br>";
       echo "SQL error :".mysqli_error($db);
       exit();
     }
-    $emailstatus=sendVerification($matricno);
-
+    $subject="Kuis e-voting system reset pasword request";
+    $emailstatus=sendVerification($matricno,$subject);
+    
     // send the user to the next if true and user to index login page if false
-    header(($emailstatus) ? 'Location: requestverification.php?success=emailsended': 'Location: ../index.php?error=failedtoresetpassword')  ;
+    header(($emailstatus) ? 'Location: requestverification.php?success=emailsended': 'Location: ../index.php?error=failedtoresetpassword') ;
 
 }
 
