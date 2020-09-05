@@ -1,4 +1,5 @@
 <?php session_start();
+
 $electionid=$_SESSION['electionid'];
 //If your session isn't valid, it returns you to the login screen for protection
 if(empty($_SESSION['id'])){
@@ -108,6 +109,10 @@ include "include/header.template.php";
                 elseif ($_GET['success'] == "deleted") {
                     echo '<div class="alert alert-danger" role="alert">Voter has been deleted!</div>';
                 }
+                elseif ($_GET['success']=="updated") {
+                    echo '<div class="alert alert-success" role="alert">Data has been updated!</div>';
+                  
+                }
             }
             elseif (isset($_GET['error'])) {
               if ($_GET['error']=="duplicate") {
@@ -120,7 +125,7 @@ include "include/header.template.php";
         <thead>
           <tr>
             <th class="th-sm">Voter ID</th>
-            <th class="th-sm">Email</th>
+
             <th class="th-sm">Name</th>
             <th class="th-sm">Matric No</th>
             <th class="th-sm">Faculty</th>
@@ -131,26 +136,47 @@ include "include/header.template.php";
         <tbody>
           <?php
       while ($rekod=mysqli_fetch_array($qr)){//redo to other records
+        $voterid=$rekod['voter_id'];
       ?>
           <tr>
-       <td><?=$rekod['voter_id']?></td>
-       <td><?=$rekod['email']?></td>
+       <td><?=$voterid?></td>
        <td><?=$rekod['voter_name']?></td>
        <td><?=$rekod['matric_no']?></td>
        <td><?=$rekod['name']?></td>
             <td>
-              <a href="deletevoter.php?voter_id=<?=$rekod['voter_id']?>" class="btn btn-danger btn-circle btn-sm"> <i class="fas fa-trash"></i>
+              
+              <a href="updatevoter.php?voter_id=<?=$voterid?>" class="btn btn-info btn-circle btn-sm"> <i class="fas fa-edit"></i></a>
+              <a href="#" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#message<?=$voterid?>"> <i class="fas fa-trash"></i></a>
             </td>
           </tr>
+
+           <!-- Logout Modal-->
+            <div class="modal fade" id="message<?=$voterid?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you sure want to delete this   voter?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                  <div class="modal-body"><?=$rekod['voter_name']?></div>
+                  <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger" href="deletevoter.php?delete_voter_id=<?php echo $voterid?>">Delete</a>
+                  </div>
+                </div>
+              </div>
+            </div>
         <?php
+
+
         }//end of records
       ?>
         </tbody>
         <tfoot>
           <tr>
             <th>Voter ID
-            </th>
-            <th>Email
             </th>
             <th>Name
             </th>
