@@ -12,6 +12,10 @@ if (empty($electionid)) {
 //If your session isn't valid, it returns you to the login screen for protection
 if(empty($_SESSION['id'])){
  header("location:../index.php?error=alreadylogout");
+}
+// check acess level
+if ($_SESSION['access_level'] != 1) {
+  header("location:../index.php?error=notauthorised");
 }    
     $query="SELECT * FROM election WHERE election_id=$electionid ";
     $qr=mysqli_query($db,$query);

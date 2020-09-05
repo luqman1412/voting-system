@@ -8,10 +8,10 @@ include "../connection.php";
 
 //If your session isn't valid, it returns you to the login screen for protection
 if(empty($_SESSION['id'])){
-  echo " session id not exsit";
   header("location:../index.php?error=alreadylogout");
   exit();
 }
+
 // get voter id from SESSIONs
 $voterid=$_SESSION['id'];
 

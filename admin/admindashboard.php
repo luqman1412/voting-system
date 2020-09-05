@@ -8,6 +8,10 @@ $userid= $_SESSION['id'];
 if(empty($_SESSION['id'])){
  header("location:../index.php?error=alreadylogout");
 }
+// check acess level
+if ($_SESSION['access_level'] != 1) {
+  header("location:../index.php?error=notauthorised");
+}
 
 $search_name="";
 include "../connection.php";
