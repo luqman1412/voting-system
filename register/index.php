@@ -39,7 +39,8 @@ include '../alertfunction.php';
               <div class="col-lg-12">
                 <div class="p-5">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Insert your matric number for verification!</h1>
+                    <h1 class="h4 text-gray-900 mb-4">Register Now !</h1>
+
                   </div>
                   <?php 
                 if (isset($_GET['error'])) {
@@ -52,7 +53,8 @@ include '../alertfunction.php';
                ?>
                   <form class="user" method="POST" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>">
                     <div class="form-group">
-                      <input name="txt_matric_no" type="text" class="form-control form-control-user" id="matric_no" aria-describedby="matric_no" placeholder="Enter Your matric number...">
+                    <label for="matric_no">Matric number</label>
+                      <input name="txt_matric_no" type="text" class="form-control form-control-user" id="matric_no" aria-describedby="matric_no" placeholder="Enter Your matric number..." required>
                     </div>
           
                     <input class="btn btn-primary btn-user btn-block" type="submit" name="btn_submit_matric_no" value="Submit">
@@ -115,6 +117,14 @@ if (isset($_POST['btn_submit_matric_no'])) {
       $record=mysqli_fetch_array($qr);
       $_SESSION['email']=$record['email'];
       $_SESSION['matric_no']=$matric_no;
+
+      // delete request record 
+      $deleterecord= mysqli_query($db,"DELETE FROM register WHERE matric_no = '$matric_no' ");
+      if($deleterecord==false){
+        echo "Failed to delete register request record<br>";
+        echo "SQL error :".mysqli_error($db);
+        exit();
+      }
       header('Location: sendemail.php');
   }
 }
