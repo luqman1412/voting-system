@@ -64,12 +64,8 @@ while ($electiontitle=mysqli_fetch_array($headername)){
               <!-- election name in header -->
             <h2><?=$electionname?></h2>
 
-
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
-
-            
-            
 
             <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -80,14 +76,15 @@ while ($electiontitle=mysqli_fetch_array($headername)){
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="../logout.php">
+
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logout
                 </a>
               </div>
             </li>
 
-          </ul>
 
         </nav>
         <!-- End of Topbar -->
+
