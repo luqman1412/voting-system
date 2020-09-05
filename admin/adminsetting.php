@@ -17,6 +17,7 @@
         $newelectionname=$_POST['txt_electionname'];
         $newelectionstart=$_POST['txt_start'];
         $newelectionend=$_POST['txt_end'];
+
         // check data validation
         if ($currenttime>$newelectionend) {
          header('Location: adminsetting.php?error=endtime');
@@ -36,15 +37,14 @@
     if (isset($_POST['btn_Umum_setting'])||isset($_POST['btn_Fstm_setting'])||isset($_POST['btn_Fsu_setting'])||isset($_POST['btn_Fpm_setting'])||isset($_POST['btn_Fppi_setting'])||isset($_POST['btn_Fp_setting'])) {
 
       $section_id=$_POST['section_id'];
-      $instrution=$_POST['txt_section_instrution'];
       $max_candiate=$_POST['number_ofcandidate'];
-      $query="UPDATE section SET max_vote='$max_candiate',section_instrution='$instrution' WHERE section_id= '$section_id'";
+      $query="UPDATE section SET max_vote='$max_candiate' WHERE section_id= '$section_id'";
       $qr=mysqli_query($db,$query);
         if ($qr==false) {
             echo "Failed to update election instrution and max vote<br>";
             echo "SQL error :".mysqli_error($db);
         }
-      header('Location: adminsetting.php?section='.$section_id);
+      header('Location: adminsetting.php?section='.$section_id.'&success=updated');
     }
     // get election detail from DB
     $qr=mysqli_query($db,"SELECT * FROM election WHERE election_id ='$electionid'");
@@ -131,6 +131,14 @@ include "include/header.template.php";
             <hr>  
 
     <!-- fakulti setting section -->
+    <?php
+    // errore handling
+      if (isset($_GET['success'])) {
+        if ($_GET['success'] == "updated") {
+          successwithclose("Succesfully saved");
+        }
+      }
+    ?>
     <form class="user" method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>">
         <div class="card o-hidden border-0 shadow-lg my-1"  >
             <div class="card-header py-3" >
@@ -142,12 +150,9 @@ include "include/header.template.php";
                   <div class='form-group col-md-10'>
                     <div class="row">
                       <div class="col-auto">
-                       <label for="section" class="col-auto col-form-label">Section Instrution:</label>
+                       <label for="section" class="col-auto col-form-label">Maximum candidate voter allowed to select:</label>
                       </div>
-                      <div class="col-md-2">
-                         <!--  section instrutions-->
-                      <input name="txt_section_instrution" type="text"  class="form-control " id="section"  value="<?=$ttl_candidate['section_instrution']?>">
-                      </div>
+
                       <div class="col-auto">
                         <!-- number of candidate -->
                       <select name='number_ofcandidate'  class='form-control '>
@@ -238,19 +243,19 @@ include "include/header.template.php";
              <div class="form-row">
                 <div class="form-group col-md-7">
                     <label  for="title" >Title</label>
-                    <input name="txt_electionname" type="text"  class="form-control form-control" id="title" placeholder="Election Title" value="<?=$electiondetail['title']?>">
+                    <input name="txt_electionname" type="text"  class="form-control form-control" id="title" placeholder="Election Title" value="<?=$electiondetail['title']?>" required>
                  </div>
              </div>
              <!-- start date textbox -->
              <div class="form-row">
                <div class="form-group col-md-4">
                       <label for="starttime">Election Start</label>
-                      <input name="txt_start" type="datetime-local" class="form-control form-control" id="starttime" value="<?=$starttime?>" >
+                      <input name="txt_start" type="datetime-local" class="form-control form-control" id="starttime" value="<?=$starttime?>" required>
                    </div>
                      <!-- end date textbox -->
                      <div class="form-group col-md-4">
                          <label for="endtime">Election End</label>
-                         <input name="txt_end" type="datetime-local" class="form-control form-control " id="endtimes" value="<?=$endtime?>" >
+                         <input name="txt_end" type="datetime-local" class="form-control form-control " id="endtimes" value="<?=$endtime?>" required>
                      </div>
                  </div>
                  <hr>
