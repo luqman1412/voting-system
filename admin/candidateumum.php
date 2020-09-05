@@ -1,5 +1,6 @@
 <?php session_start();
 $electionid=$_SESSION['electionid'];
+
 //If your session isn't valid, it returns you to the login screen for protection
 if(empty($_SESSION['id'])){
  header("location:../index.php?error=alreadylogout");
@@ -52,17 +53,39 @@ include "include/header.template.php";
                 </thead>
                 <tbody>
                   <?php
-              while ($rekod=mysqli_fetch_array($qr)){//redo to other records
+              while ($rekod=mysqli_fetch_array($qr)){
+                $candidateid=$rekod['candidate_id'];
               ?>
                   <tr>
-                    <td><?=$rekod['candidate_id']?></td>
+                    <td><?=$candidateid?></td>
                     <td><?=$rekod['section_name']?></td>
                     <td><?=$rekod['voter_name']?></td>
                     <td><?=$rekod['name']?></td>
                     <td>
-                      <a href="deletecandidate.php?candidate_id=<?=$rekod['candidate_id']?>" class="btn btn-danger btn-circle btn-sm"> <i class="fas fa-trash"></i>
+                      <a href="#" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" 
+                      data-target="#message<?=$candidateid?>"> <i class="fas fa-trash"></i></a>
                     </td>
                   </tr>
+
+                  <!-- Logout Modal-->
+                    <div class="modal fade" id="message<?=$candidateid?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Are you sure want to delete this candidate?</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">×</span>
+                            </button>
+                          </div>
+                          <div class="modal-body"><?=$rekod['voter_name']?></div>
+                          <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                            <a class="btn btn-danger" href="deletecandidate.php?deletecandidate_id=<?=$candidateid?>">Delete</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                 <?php
                 }//end of records
               ?>
