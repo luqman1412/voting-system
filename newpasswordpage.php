@@ -26,7 +26,7 @@ if (empty($matric_no)) {
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
-<body >
+<body class="bg-gradient-primary" >
   <div class="container">
     <div class="row">
       <!-- for empty space on the left -->
@@ -83,8 +83,8 @@ if (empty($matric_no)) {
 <?php 
 include "connection.php";
 if (isset($_POST['btn_submit_newpassword'])) {
-  $newpassword=$_POST['txt_newpassword'];
-  $repeatpassword =$_POST['txt_repeatpassword'];
+  $newpassword=md5($_POST['txt_newpassword']);
+  $repeatpassword =md5($_POST['txt_repeatpassword']);
   // check if password is inserted if not return error message
   if (empty($newpassword) || empty($repeatpassword)) {
     header('Location: newpasswordpage.php?error=emptyfield');
@@ -94,7 +94,7 @@ if (isset($_POST['btn_submit_newpassword'])) {
   }
   elseif ($newpassword==$repeatpassword) {
     // update password on DB
-    $qr=mysqli_query($db,"UPDATE login SET password ='$newpassword',OTP=0 WHERE username ='$matric_no' ");
+    $qr=mysqli_query($db,"UPDATE login SET password ='$newpassword',status = 'registed' WHERE username ='$matric_no' ");
     if($qr==false){
       echo "Failed update new password <br>";
       echo "SQL error :".mysqli_error($db);
@@ -106,4 +106,3 @@ if (isset($_POST['btn_submit_newpassword'])) {
     }
   }
 }
-include 'include/footer_login.php'; ?>
