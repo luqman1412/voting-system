@@ -193,7 +193,7 @@ var chart = new Chart(ctx, {
     legend: {
       display: false
     },
-    cutoutPercentage: 50,
+    cutoutPercentage: 0,
   }
 });
 

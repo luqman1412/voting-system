@@ -99,70 +99,56 @@ include "include/launchelectionheader.php";
           </div>
           <div class="row">
      <!-- Project Card Example -->
-            <div class="col-xl-8 col-lg-7">
+            <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
                   <h6 class="m-0 font-weight-bold text-primary">Result </h6>
+                  
                 </div>
                 <div class="card-body">
-                  <?php
-                     $color=0;
-                     while ($candidate=mysqli_fetch_array($qr)) { 
+                  <div class="row">
+                      <!-- voter name -->
+                      <div class="col-6">
+                        <table class="table table-bordered">
+                          <tr>
+                            <th>id</th>
+                            <th class="row-1">candidate name</th>
+                            <th class="row-1">total vote</th>
+                            <th class="row-1">percentage</th>
+                          </tr>
+                        <?php
+                          $color=0;
+                          while ($candidate=mysqli_fetch_array($qr)) { 
                             // asign value for pie chart value
                             array_push($totalvotereceive, $candidate['total_vote']);
                             array_push($candidatename, $candidate['voter_name']);
-
-                            ?>
-                            <h4 class="small font-weight-bold"><?="id".$candidate['voter_id']." ".$candidate['voter_name']?> <span class="float-right"><?=$candidate['percentage']." %"?></span></h4>
-                            <div class="progress mb-4">
-                            <div class="progress-bar bg-#3cb44b" role="progressbar" style="width: <?=$candidate['percentage']?>% ; background-color: <?=$colorscheme[$color]?> "  aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" ></div>
-                            </div>
-                  <?php 
-                      $color++;
-                      }
-                       ?>
-                </div>
-              </div>
-            </div>
-
-            <!-- Pie Chart -->
-            <div class="col-xl-4 col-lg-5">
-              <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Vote chart</h6>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                  <div class="chart-pie pt-4 pb-2">
-                    <canvas id="myChart"></canvas>
-                    
+                        ?>
+                          <tr>
+                            <td><?=$candidate['candidate_id']?></td>
+                            <td ><i class="fas fa-square" style="color:<?=$colorscheme[$color]?>"></i> <?=$candidate['voter_name']?></td>
+                            <td ><?=$candidate['total_vote']?></td>
+                            <td ><?=$candidate['percentage']?>%</td>
+                          </tr>
+                        <?php 
+                          $color++;
+                          // close loop
+                          } 
+                        ?>
+                        </table>
+                      </div>
+                      <!-- chart  -->
+                      <div class="col-6">
+                        <div class="chart-pie pt-4 pb-2">
+                          <canvas id="myChart"></canvas>
+                        </div>
+                      </div>
                   </div>
-                  <!-- text for pie chart -->
-                  <div class="mt-4 text-center small">
-                    <?php  
-                      foreach ($candidatename as $number => $name) {
-                        echo '<span class="mr-2">
-                                  <i class="fas fa-circle "  style=color:'.$colorscheme[$number].';"></i>'.$name.'
-                              </span>';
-                      }
 
-                    ?>
-
-                  </div>
                 </div>
               </div>
             </div>
 
           </div>
-
-
-    <hr>
-    <div class="p-2" align="right">
-      <button class="btn btn-primary">End Election</button>
-    </div>
-
-
 
   </div>
 </div>
@@ -201,7 +187,7 @@ var chart = new Chart(ctx, {
     legend: {
       display: false
     },
-    cutoutPercentage: 70,
+    cutoutPercentage: 0,
   }
 });
 
