@@ -139,9 +139,9 @@ include "include/header.template.php";
       <!-- close row -->
 		</div>
 		<hr>
-		<div class="p-2" align="right">
+<!-- 		<div class="p-2" align="right">
 			<a href="electionlaunch.php"><button class="btn btn-primary">Launch Election</button></a>
-		</div>
+		</div> -->
 
 </div>
 
