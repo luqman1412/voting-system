@@ -19,10 +19,10 @@ $plus5minute= date('Y-m-d H:i:s', strtotime('+5 minutes', strtotime($currenttime
 
 
 // check if there are active election
-$check_activeelection=mysqli_query($db,"SELECT * FROM election WHERE status ='Running' ");
-if(mysqli_num_rows($check_activeelection)>0){
-header("Location: admindashboard.php?error=activeelection");
-}
+// $check_activeelection=mysqli_query($db,"SELECT * FROM election WHERE status ='Running' ");
+// if(mysqli_num_rows($check_activeelection)>0){
+// header("Location: admindashboard.php?error=activeelection");
+// }
 // set election default name 
 $default_electionname="";
 

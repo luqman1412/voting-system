@@ -71,8 +71,8 @@ include "include/launchelectionheader.php";
 
 
 
-<div class="container-fluid">
-<ul class="nav nav-pills">
+<div class="container-fluid " >
+<ul class="nav nav-pills d-print-none">
               <li class="nav-item">
                 <a class="nav-link <?=$all_status?> " href="resultpage.php">Umum</a>
               </li>
@@ -97,7 +97,7 @@ include "include/launchelectionheader.php";
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
           </div>
-          <div class="row">
+          <div  class="row ">
      <!-- Project Card Example -->
             <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
