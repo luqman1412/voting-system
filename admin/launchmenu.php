@@ -29,7 +29,7 @@ include "../connection.php";
 
     if($currenttime>= "$endtime" ){
       $endtime_valid="invalid";
-      array_push($message,'<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-circle"></i> <b>Warning: </b> Election time has ended. Please change the times </div>');
+      array_push($message,'<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-circle"></i> <b>Warning: </b> Election time has passed. Please change the times </div>');
 
       }
     elseif($currenttime>= "$start_time" ){
@@ -227,11 +227,8 @@ include "include/header.template.php";
                   } 
                 echo "</div>";
                 
-                if (!empty($message)) {
-                   $button_next_status="disabled";
-                 }
-                 else
-                   $button_next_status=" ";
+                $button_next_status = (!empty($message)? "disabled" : " " );
+
                   ?>
                 <div class="p-2" align="right">
                   <a href="launchmenu.php?page2"><button class="btn btn-primary" <?=$button_next_status?>>Next</button></a>
