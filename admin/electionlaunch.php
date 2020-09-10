@@ -212,11 +212,6 @@ include "include/launchelectionheader.php";
 
 		</div>
 
-		<hr>
-		<div class="p-2" align="right">
-			<button class="btn btn-primary">End Election</button>
-		</div>
-
 	</div>
 </div>
 <?php

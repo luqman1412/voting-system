@@ -10,7 +10,7 @@ if (isset($_POST['btn_login'])) {
   }
 
   if (mysqli_num_rows($qr)!=1) {
-    header('Location: login.php?error=usernotfound');
+    header('Location: index.php?error=usernotfound');
     exit();
   }
   // delete any request record inn DB
@@ -20,6 +20,7 @@ if (isset($_POST['btn_login'])) {
     exit();
   }
   $subject="Kuis e-voting system login request";
+
   $emailstatus= sendVerification($matricno,$subject);
 
   if ($emailstatus) {
@@ -27,7 +28,7 @@ if (isset($_POST['btn_login'])) {
     header('Location: studentverification.php?success=emailsended');
   }
   else
-    header('Location:login.php?error=failedtosendemail');
+    header('Location:index.php?error=failedtosendemail');
 }
 
  ?>
@@ -112,7 +113,7 @@ if (isset($_POST['btn_login'])) {
                         }
                     }
                    ?>
-                  <form name="login_form" class="user" method="POST" action="login.php">
+                  <form name="login_form" class="user" method="POST" action="index.php">
                     <div class="form-group">
                       <input name="txt_matricno" type="text" class="form-control form-control-user" id="matric_no" aria-describedby="matric_no" placeholder="Enter Matric number..." required >
                       <small>Insert your matric number (e.g: 123242)</small>
@@ -121,6 +122,14 @@ if (isset($_POST['btn_login'])) {
                     <input  class="btn btn-primary btn-user btn-block" type="submit" name="btn_login" value="Continue">
                     
                   </form>
+                  <hr>
+                  <div class="text-center">
+                    <a class="small" href="analysis.php">Voter Turnout</a>
+                  </div>
+
+                  <div class="text-center">
+                    <a class="small" href="admin/">I'am Adminstration </a>
+                  </div>
 
                 </div>
               </div>
@@ -161,7 +170,8 @@ $headers = "Content-Type: text/html; charset=ISO-8859-1\r\n";
 $message ="This is your code for verify your request";
 $message .="<br>Code: "."<b>".$pin."</b>";
 $message .="<br>If your not request to reset password, please ignore this email";
-
+$email= $matricno. "@student.kuis.edu.my";
+// set default email for testing
 $defaultemail= '1839011@student.kuis.edu.my';
 
       // send email 

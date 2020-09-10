@@ -39,7 +39,7 @@
               <div class="col-lg-12">
                 <div class="p-5">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4"> Kuis E-voting System</h1>
+                    <h1 class="h4 text-gray-900 mb-4">Welcome To Kuis E-voting System!</h1>
                     <h3 class="h6 text-gray-900 mb-4"> Adminstration Only</h3>
 
 
@@ -93,9 +93,6 @@
                     
                   </form>
                   <hr>
-                  <!-- <div class="text-center">
-                    <a class="small" href="forgot-password/forgot_password.php">Forgot Password?</a>
-                  </div> -->
                   <div class="text-center">
                     <a class="small" href="../index.php">I'am Student</a>
                   </div>
