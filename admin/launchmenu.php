@@ -33,8 +33,8 @@ include "../connection.php";
 
       }
     elseif($currenttime>= "$start_time" ){
-      $starttime_valid="valid";
-      array_push($message,'<div class="alert alert-warning" role="alert"><i class="fas fa-exclamation-triangle"></i> <b>Important: </b> This election will start automatically start after launch </div>');
+      $starttime_valid="invalid";
+      array_push($message,'<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-triangle"></i> <b>Warning: </b> This election already started </div>');
 
       }
     if ($start_time>= "$endtime") {
@@ -191,11 +191,9 @@ include "include/header.template.php";
                   <div class="col-3">
                       <label>Election start time: </label>
                   </div>
-                  <div class="col-auto">
+                  <div class="col-auto p-2">
                     <input class="form-control is-<?=$starttime_valid?>" value="<?=$starttime?>" type="datetime-local" name="start_date" readonly>
-                    <div class="invalid-feedback">
-                    Election start time is larger than end time
-                    </div>
+                   
                     <div class="valid-feedback">
                     Election start time look good
                     </div> 
