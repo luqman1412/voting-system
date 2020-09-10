@@ -62,7 +62,6 @@ include 'include/header_votingpage.php'
               <div class="row">
                 <div class="col">
                   <h3>Candidate Umum</h3>
-                    <form method="POST" action="insertvotingintoDB.php">
                     <div class="table-reponsive">
                       <table class="table table-bordered table-fixed">
                         <tr>
@@ -86,7 +85,7 @@ include 'include/header_votingpage.php'
                             $name=$record['voter_name'];
                         ?> 
                         <tr>
-                          <td><input name="umum<?=$key?>" type="text" readonly class="form-control-plaintext form-control-sm" value="<?=$candidate_id?>"></td>
+                          <td><?=$candidate_id?></td>
                           <td><?=$name?></td>
                         </tr>
                         <!-- close loop -->
@@ -120,7 +119,7 @@ include 'include/header_votingpage.php'
                               $name=$record['voter_name'];
                           ?> 
                           <tr>
-                            <td><input name="<?=$record['name']?><?=$key?>" type="text" readonly class="form-control-plaintext form-control-sm" value="<?=$candidate_id?>"></td>            
+                            <td><?=$candidate_id?></td>            
                             <td><?=$name?></td>
                           </tr>
                           <!-- close loop -->
@@ -128,9 +127,9 @@ include 'include/header_votingpage.php'
                         </table>
                       </div>
                 </div>
-                 <input class="btn btn-danger " name="btn_back" type="button"value="Back" onclick="history.back()">
-                 <input class="btn btn-primary " name="submit" type="submit" value="Submit"  >
-                    </form>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationmodal">Submit</button>
+                 <button class="btn btn-danger " name="btn_back" type="button"value="Back" onclick="history.back()">Back</button>
+ 
               </div>
             </div>
           </div>
@@ -139,6 +138,24 @@ include 'include/header_votingpage.php'
     </div>
   </div>
 
+            <!-- Confirmation  Modal-->
+            <div class="modal fade" id="confirmationmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you sure ?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">You vote cannot be change after you continue</div>
+                  <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger" href="insertvotingintoDB.php">Continue</a>
+                  </div>
+                </div>
+              </div>
+            </div>
 </body>
 </html>
 <?php include 'include/footer_votingpage.php' ?>
