@@ -1,6 +1,8 @@
 <?php 
 require '../connection.php';
-
+if ($_SESSION['electionstatus']!= "Paused") {
+  header('Location: admindashboard.php');
+}
 $sql="SELECT title FROM election WHERE election_id = $electionid ";
 
 $headername=mysqli_query($db,$sql);
