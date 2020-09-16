@@ -79,7 +79,7 @@ include "include/header.template.php";
      echo "Failed to get section information<br>";
      echo "SQL error :".mysqli_error($db);
   }
-
+$candidate_message="";
   while ($section=mysqli_fetch_array($get_all_section)) {
      $section_id=$section['section_id'];
 
@@ -93,17 +93,17 @@ include "include/header.template.php";
   if ($get_ttl_candidate==false) {
      echo "Failed to get candidate<br>";
      echo "SQL error :".mysqli_error($db);
+     exit();
   }
   else
     $ttl_candidate=mysqli_fetch_array($get_ttl_candidate);
             
-             if (empty($ttl_candidate['ttl'])) {
+             if ($ttl_candidate['ttl']==0) {
               $candidate_status="is-invalid";
               $candidate_message='<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-circle"></i> <b>Warning: </b>There are section that didnt have candidate </div>';
             }
             else{
               $candidate_status="is-valid";
-              $candidate_message="";
             }
             // check for section id for redirect
             $redirectname_addcandidate= ($section_id==0 ? "candidateumum" : "candidatefakulti" );
@@ -144,7 +144,9 @@ include "include/header.template.php";
                ?>
                 <div class="p-2" align="right">
                   <a href="launchmenu.php?"><button class="btn btn-primary">Back</button></a>
-                  <a href="launchmenu.php?page3"><button class="btn btn-primary" <?=$btn_launch_status?>>Next</button></a>
+                  <!-- <a href="launchmenu.php?page3"><button class="btn btn-primary" <?=$btn_launch_status?>>Next</button></a> -->
+                  <a href="#"  data-toggle="modal" data-target="#launchelectionmodal" > <button class="btn btn-primary"<?=$btn_launch_status?>>Launch</button></a>
+
                 </div>
             </div>
           </div>

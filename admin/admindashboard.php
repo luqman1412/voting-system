@@ -68,6 +68,7 @@ if (isset($_GET['data'])) {
               <input  name="txtsearch" class="form-control mr-sm-2" type="text" value="<?=$search_name?>" placeholder="Search" aria-label="Search" onfocus="this.value=''" >
               <button name="btnsearch" class="btn btn-primary btn-rounded btn-md my-0" type="submit"><i class="fas fa-search"></i></button>
             </form>
+            <div class="p-2">
               <?php 
                 // success handling for searchbox
                 if (isset($_GET['success'])) {
@@ -75,9 +76,7 @@ if (isset($_GET['data'])) {
                     successwithclose("Election has been deleted!");
                   }
                 }
-                echo "<hr>";
-                // error handling for searchbox
-                if (isset($_GET['error'])) {
+                elseif (isset($_GET['error'])) {
                   if ($_GET['error']=="norecordfund") {
                     alertwithclose("No record found for: ".$search_name);
                   }
@@ -85,7 +84,10 @@ if (isset($_GET['data'])) {
                     alertwithclose("Only <strong>1 active election</strong> are allowed! ");
                   }
                 }
+                echo "<hr>";
+
               ?>
+              </div>
               <div class="table-responsive">
                 <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                     <thead>
@@ -114,13 +116,32 @@ if (isset($_GET['data'])) {
                            <td> <?=$start_time?></td>
                            <td> <?=$end_time?></td>
                            <td>
-                              <!-- delete election button -->
-                              <a class="btn btn-danger btn-circle" href="deleteelection.php?electionid=<?=$record['election_id']?>"><i class="fas fa-trash"></i></a>
-                           
                               <!-- view election button -->
                               <a class="btn btn-primary btn-circle" href="<?=$redirect_pagename?>.php?electionid=<?=$record['election_id']?>"><i class="fas fa-eye"></i></a>
+                              <a href="#"  data-toggle="modal" data-target="#delete<?=$record['election_id']?>" > <button class="btn btn-danger btn-circle"><i class="fas fa-trash"></i></button></a>
+
                             </td>   
                        </tr>
+
+                           <!-- Delete election modal -->
+                             <div class="modal fade" id="delete<?=$record['election_id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Are you sure want to delete <?=$record['title']?>? </h5>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">×</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body">You will not able to undo this action </div>
+                                  <div class="modal-footer">
+                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                    <a class="btn btn-danger" href="deleteelection.php?election_id=<?=$record['election_id']?>">Delete</a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
                       <?php 
                       // close loop election information
                         } ?>  
@@ -135,6 +156,3 @@ if (isset($_GET['data'])) {
 <?php
 include "include/footer.template.php";
 ?>	
-
-
-
