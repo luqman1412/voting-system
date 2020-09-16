@@ -148,6 +148,7 @@ include "include/header.template.php";
         <tbody>
           <?php
       while ($rekod=mysqli_fetch_array($qr)){//redo to other records
+        $candidateid=$rekod['candidate_id'];
       ?>
           <tr>
             <td><?=$rekod['candidate_id']?></td>

@@ -24,7 +24,7 @@ if ($_SESSION['access_level'] != 1) {
         echo "SQL error :".mysqli_error($db);
     }
     $electiondetail=mysqli_fetch_array($qr);
-
+    $_SESSION['electionstatus']=$electiondetail['status'];
     // get total voter
       $query="SELECT COUNT(*) FROM voter ";
 
