@@ -3,11 +3,13 @@ if (isset($_POST['btn_login'])) {
   require 'connection.php';
 
   $matricno=$_POST['txt_matricno'];
-  $qr=mysqli_query($db,"SELECT matric_no FROM voter WHERE matric_no='$matricno' ");
+  $qr=mysqli_query($db,"SELECT matric_no,voter_name FROM voter WHERE matric_no='$matricno' ");
   if (mysqli_error($db)==true) {
-    echo "Error: ".mysqli_error($db);
+    echo "Failed to Fund Student<br>";
+    echo "SQL error :".mysqli_error($db);
     exit();
   }
+
 
   if (mysqli_num_rows($qr)!=1) {
     header('Location: index.php?error=usernotfound');
@@ -16,21 +18,19 @@ if (isset($_POST['btn_login'])) {
   // delete any request record inn DB
   $deleterecord=mysqli_query($db,"DELETE FROM requestlogin WHERE matric_no= '$matricno' ");
   if (mysqli_error($db)) {
-    echo "Error: ".mysqli_error($db);
+    echo "Failed to delete previos login request<br>";
+    echo "SQL error :".mysqli_error($db);
     exit();
   }
+  $voterdetail=mysqli_fetch_array($qr);
   $subject="Kuis e-voting system login request";
 
-  $emailstatus= sendVerification($matricno,$subject);
+  $_SESSION['name']=$voterdetail['voter_name'];
+  $_SESSION['matric_no']=$voterdetail['matric_no'];
+  $_SESSION['subject']=$subject;
 
-  if ($emailstatus) {
-    $_SESSION['matric_no']=$matricno;
-    header('Location: studentverification.php?success=emailsended');
-  }
-  else
-    header('Location:index.php?error=failedtosendemail');
+  header('Location:sendotp.php');
 }
-
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -115,7 +115,7 @@ if (isset($_POST['btn_login'])) {
                    ?>
                   <form name="login_form" class="user" method="POST" action="index.php">
                     <div class="form-group">
-                      <input name="txt_matricno" type="text" class="form-control form-control-user" id="matric_no" aria-describedby="matric_no" placeholder="Enter Matric number..." required >
+                      <input name="txt_matricno" type="text" class="form-control form-control-user" id="matric_no" aria-describedby="matric_no" placeholder="Enter Matric number..." required autofocus>
                       <small>Insert your matric number (e.g: 123242)</small>
                     </div>
 
@@ -156,36 +156,4 @@ if (isset($_POST['btn_login'])) {
 </body>
 
 </html>
-<?php 
- function sendVerification($matric_no,$subject){
-// DB connection
-  require 'connection.php';
 
- // create pin 
-$pin=random_int(10000, 99999);
-$hashpin=md5($pin);
- // message in email
-$messagesubject=$subject;
-$headers = "Content-Type: text/html; charset=ISO-8859-1\r\n";
-$message ="This is your code for verify your request";
-$message .="<br>Code: "."<b>".$pin."</b>";
-$message .="<br>If your not request to reset password, please ignore this email";
-$email= $matricno. "@student.kuis.edu.my";
-// set default email for testing
-$defaultemail= '1839011@student.kuis.edu.my';
-
-      // send email 
-    // check whether email has been send and return to login page with message
-    if (mail($defaultemail, $messagesubject, $message,$headers)) {
-      $query= mysqli_query($db,"INSERT INTO requestlogin (matric_no,otp) VALUES ('$matric_no','$hashpin')");
-      if($query==false){
-          echo "Failed to load login request<br>";
-          echo "SQL error :".mysqli_error($db); 
-        }
-        else
-          return true;
-    }
-    else
-      return false;
- }
- ?>

@@ -62,7 +62,7 @@ if (isset($_SESSION['matric_no'])) {
                 ?>
                   <form class="user" method="POST" action="<?=$_SERVER['PHP_SELF'];?>">
                     <div class="form-group">
-                      <input type="text" name="txt_verification_code" class="form-control form-control-user" placeholder="Insert Verification Code Here...">
+                      <input type="text" name="txt_verification_code" class="form-control form-control-user" placeholder="Insert Verification Code Here..." required autofocus>
                     </div>
                     <input type="submit" name="btn_verify" class="btn btn-primary btn-user btn-block" value="Verify"> 
 
@@ -131,10 +131,7 @@ if (isset($_POST['btn_verify']) ) {
           exit(); 
     }
     else
-      echo "matric no : ".$matricno;
-      echo "user: $verifypin";
-      echo "record: ".$record['otp'];
-      // header('Location: requestverification.php?error=wrongcode');
+      header('Location: studentverification.php?error=wrongcode');
       exit();
 }
 
