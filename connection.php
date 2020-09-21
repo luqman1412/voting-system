@@ -2,7 +2,7 @@
 <?php
 
 $dbhost="localhost";
-$dbusername="root";
+$dbusername="";
 $dbpassword="";
 $dbname="voting";
 
