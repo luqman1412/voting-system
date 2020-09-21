@@ -62,8 +62,8 @@ elseif ($pagename=="launchmenu.php") {
         </a>
         <div id="collapseCandidate" class="collapse <?=$candidate_show?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item <?=$candidateumum_active?>" href="candidateumum.php">Umum</a>
-            <a class="collapse-item <?=$candidatefakulti_active?>" href="candidatefakulti.php">Fakulti</a>
+            <a class="collapse-item <?=$candidateumum_active?>" href="candidateumum.php">General</a>
+            <a class="collapse-item <?=$candidatefakulti_active?>" href="candidatefakulti.php">Faculty</a>
           </div>
         </div>
       </li>

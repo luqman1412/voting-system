@@ -31,7 +31,7 @@ include "include/header.template.php";
           <div class="card shadow mb-4">
             <div class="card-header py-3" >
               <div class="d-sm-flex align-items-center justify-content-between mb-1">
-                <h5 class="m-0  font-weight-bold text-primary">Calon Umum</h5>
+                <h5 class="m-0  font-weight-bold text-primary">General Candidate</h5>
                 <div class="pull-right"><a href="umum_voterlist.php"><button type="button" class="btn btn-primary">Add Candidates</button></a></div>
               </div>
            </div>
@@ -41,11 +41,12 @@ include "include/header.template.php";
                   <tr>
                     <th class="th-sm">Candidate ID
                     </th>
-                    <th class="th-sm">Section 
-                    </th>
                     <th class="th-sm">Name
                     </th>
                     <th class="th-sm">Fakulti
+                    </th>
+                    <th class="th-sm">Section 
+                    </th>
                     <th >Action
                     </th>
 
@@ -58,9 +59,9 @@ include "include/header.template.php";
               ?>
                   <tr>
                     <td><?=$candidateid?></td>
-                    <td><?=$rekod['section_name']?></td>
                     <td><?=$rekod['voter_name']?></td>
                     <td><?=$rekod['name']?></td>
+                    <td><?=$rekod['section_name']?></td>
                     <td>
                       <a href="#" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" 
                       data-target="#message<?=$candidateid?>"> <i class="fas fa-trash"></i></a>
@@ -94,11 +95,11 @@ include "include/header.template.php";
                   <tr>
                     <th >Candidate ID
                     </th>
-                    <th >Section 
-                    </th>
                     <th >Name
                     </th>
                     <th >Fakulti
+                    </th>
+                    <th >Section 
                     </th>
                     <th >Action
                     </th>

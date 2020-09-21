@@ -2,7 +2,7 @@
 // declare array for chart
 $label = array("Total Voter Turout","Total Student");
 $total =array();
-$colorscheme= array('#e6194B', '#3cb44b', '#ffe119', '#f58231', '#42d4f4', '#f032e6', '#fabed4', '#469990', '#dcbeff', '#9A6324', '#fffac8', '#800000', '#aaffc3', '#000075', '#a9a9a9', '#000000');
+$colorscheme= array('#3cb44b','#e6194B');
 
 require 'connection.php';
 // get faculty id in URL
@@ -11,23 +11,23 @@ if (isset($_GET['data'])) {
 
   switch ($faculty) {
     case '1':
-      $facultyname="Student FSTM";
+      $facultyname="FSTM Student";
       $fstm="active";
       break;
     case '2':
-      $facultyname="Student FSU";
+      $facultyname="FSU Student";
       $fsu="active";
       break;
     case '3':
-      $facultyname="Student FPM";
+      $facultyname="FPM Student";
       $fpm="active";
       break;
     case '4':
-      $facultyname="Student FPPI";
+      $facultyname="FPPI Student";
       $fppi="active";
       break;
     case '5':
-      $facultyname="Student FP";
+      $facultyname="FP Student"; 
       $fp="active";
       break;
 
@@ -121,29 +121,35 @@ else{
           <img src="image/lambangkuis-full.png" alt="lambang kuis" width="500" height="90">
         </div>
         <div class="card o-hidden border-0 shadow-lg my-3">
-          <div class="card-body p-0">
+          <div class="card-body p-5">
+            <!-- mini navbar -->
+            <ul class="nav nav-pills nav-fill">
+              <li class="nav-item">
+                <a class="nav-link <?=$all?>" href="analysis.php">All</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link <?=$fstm?>" href="analysis.php?data=1">FSTM</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link <?=$fsu?>" href="analysis.php?data=2">FSU</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link <?=$fpm?>" href="analysis.php?data=3">FPM</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link <?=$fppi?>" href="analysis.php?data=4">FPPI</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link <?=$fp?>" href="analysis.php?data=5">FP</a>
+              </li>
+            </ul>
             <!-- Nested Row within Card Body -->
             <div class="row">
 
               <div class="col-lg-12">
-                <div class="p-5">
+                <div class="p-4">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Voter Turnout for <?=$facultyname?> </h1>
-                    <div class="dropdown show">
-                      <a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Faculty
-                      </a>
-
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item <?=$all?>" href="analysis.php">All</a>
-                        <a class="dropdown-item <?=$fstm?>" href="analysis.php?data=1">FSTM</a>
-                        <a class="dropdown-item <?=$fsu?>" href="analysis.php?data=2">FSU</a>
-                        <a class="dropdown-item <?=$fpm?>" href="analysis.php?data=3">FPM</a>
-                        <a class="dropdown-item <?=$fppi?>" href="analysis.php?data=4">FPPI</a>
-                        <a class="dropdown-item <?=$fp?>" href="analysis.php?data=5">FP</a>
-                      </div>
-                    </div>
-
+                    <h1 class="h3 text-gray-900 mb-4">Voter Turnout for <?=$facultyname?> </h1>
                     <div class="chart-pie pt-4 pb-2">
                       <canvas id="myChart"></canvas>
                     </div>

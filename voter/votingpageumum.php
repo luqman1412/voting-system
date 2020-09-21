@@ -100,7 +100,7 @@ include 'include/header_votingpage.php';
       <div class="col-xl-7 col-lg-12 col-md-9">
         <div class="card o-hidden border-0 shadow-lg my-5">
           <div class="card-header py-3" >
-            <h5 class="m-0  font-weight-bold text-primary">Calon Umum</h5>
+            <h5 class="m-0  font-weight-bold text-primary">General Candidate</h5>
           </div>
           <div class="card-body p-0">
                 <div class="p-5">

@@ -107,25 +107,25 @@ include "include/header.template.php";
     ?>
      <ul class="nav nav-pills">
               <li class="nav-item">
-                <a class="nav-link <?=$all_status?> " href="adminsetting.php">General </a>
+                <a class="nav-link <?=$all_status?> " href="adminsetting.php">Election Setting </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?=$umum_status?>" href="adminsetting.php?section=0">Umum</a>
+                <a class="nav-link <?=$umum_status?>" href="adminsetting.php?section=0">General setting</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?=$fstm_status?>" href="adminsetting.php?section=1">FSTM</a>
+                <a class="nav-link <?=$fstm_status?>" href="adminsetting.php?section=1">FSTM setting</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?=$fpm_status?> " href="adminsetting.php?section=3">FPM</a>
+                <a class="nav-link <?=$fpm_status?> " href="adminsetting.php?section=3">FPM setting</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?=$fppi_status?> " href="adminsetting.php?section=4">FPPI</a>
+                <a class="nav-link <?=$fppi_status?> " href="adminsetting.php?section=4">FPPI setting</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?=$fsu_status?> " href="adminsetting.php?section=2">FSU</a>
+                <a class="nav-link <?=$fsu_status?> " href="adminsetting.php?section=2">FSU setting</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <?=$fp_status?> " href="adminsetting.php?section=5">FP</a>
+                <a class="nav-link <?=$fp_status?> " href="adminsetting.php?section=5">FP setting</a>
               </li>
             </ul>
             <hr>  
@@ -194,25 +194,25 @@ include "include/header.template.php";
       ?>
            <ul class="nav nav-pills">
               <li class="nav-item">
-                <a class="nav-link active " href="adminsetting.php">General </a>
+                <a class="nav-link active " href="adminsetting.php">Election Setting</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="adminsetting.php?section=0">Umum</a>
+                <a class="nav-link " href="adminsetting.php?section=0">General section setting</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="adminsetting.php?section=1">FSTM</a>
+                <a class="nav-link " href="adminsetting.php?section=1">FSTM setting</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link  " href="adminsetting.php?section=3">FPM</a>
+                <a class="nav-link  " href="adminsetting.php?section=3">FPM setting</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link  " href="adminsetting.php?section=4">FPPI</a>
+                <a class="nav-link  " href="adminsetting.php?section=4">FPPI setting</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link  " href="adminsetting.php?section=2">FSU</a>
+                <a class="nav-link  " href="adminsetting.php?section=2">FSU setting</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link  " href="adminsetting.php?section=5">FP</a>
+                <a class="nav-link  " href="adminsetting.php?section=5">FP setting</a>
               </li>
             </ul>
             <hr> 
@@ -231,7 +231,7 @@ include "include/header.template.php";
        <!-- general setting card -->
        <div class="card o-hidden border-0 shadow-lg my-1"  >
         <div class="card-header py-3" >
-          <h5 class="m-0  font-weight-bold text-primary">General Settings</h5>
+          <h5 class="m-0  font-weight-bold text-primary">Election Settings</h5>
         </div>
       <div class="card-body p-0" >
          <!-- card padding -->

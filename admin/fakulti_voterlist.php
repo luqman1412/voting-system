@@ -27,7 +27,7 @@ include "include/header.template.php";
   <div class="card shadow mb-4">
     <div class="card-header py-3" >
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h5 class="m-0  font-weight-bold text-primary">Sila pilih calon</h5>
+        <h5 class="m-0  font-weight-bold text-primary">Please select candidate</h5>
       </div>
     </div>
     <div class="card-body">
@@ -59,17 +59,52 @@ include "include/header.template.php";
         </thead>
         <tbody>
           <?php
-      while ($rekod=mysqli_fetch_array($qr)){//redo to other records
+      while ($rekod=mysqli_fetch_array($qr)){
+        $voterid=$rekod['voter_id'];
       ?>
           <tr>
-       <td><?=$rekod['voter_id']?></td>
+       <td><?=$voterid?></td>
        <td><?=$rekod['voter_name']?></td>
        <td><?=$rekod['matric_no']?></td>
        <td><?=$rekod['name']?></td>
             <td>
-              <a href="fakulti_confirmation.php?voter_id=<?=$rekod['voter_id']?>">  <button type="button" class="btn btn-primary btn-rounded btn-sm my-0"> Add </button></a>
+              <a href="#" class="btn btn-success btn-circle btn-sm" data-toggle="modal" data-target="#message<?=$voterid?>"> <i class="fas fa-plus"></i></a>
             </td>
           </tr>
+          <!-- add fakulti candidate Modal-->
+        <div class="modal fade bd-example-modal-lg" id="message<?=$voterid?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add this voter as candidate? </h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-md-2"><b>Matric no</b></div>
+                          <div class="col-md-6"><b>Voter Name</b></div>
+                          <div class="col-md-2"><b>Faculty</b></div>
+                          <div class="col-md-2"><b>Section</b></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-2"><?=$rekod['matric_no']?></div>
+                          <div class="col-md-6"><?=$rekod['voter_name']?></div>
+                          <div class="col-md-2"><?=$rekod['name']?></div>
+                          <div class="col-md-2">Faculty</div>
+                        </div>
+                      
+                    </div>
+                    </div>
+                <div class="modal-footer">
+                <button class="btn btn-danger" type="button" data-dismiss="modal">No</button>
+                <a class="btn btn-success" href="fakulti_addcandidate.php?voterid=<?=$voterid?>">Yes</a>
+                </div>
+            </div>
+            </div>
+        </div>
         <?php
         }//end of records
       ?>

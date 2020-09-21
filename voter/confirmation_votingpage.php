@@ -61,7 +61,7 @@ include 'include/header_votingpage.php'
             <div class="p-5">
               <div class="row">
                 <div class="col">
-                  <h3>Candidate Umum</h3>
+                  <h3>General Candidate</h3>
                     <div class="table-reponsive">
                       <table class="table table-bordered table-fixed">
                         <tr>
@@ -94,7 +94,7 @@ include 'include/header_votingpage.php'
                     </div>
                 </div>
                       <div class="col">
-                        <h3>Candidate Fakulti</h3>
+                        <h3>Faculty Candidate</h3>
                         <table class="table table-bordered table-fixed ">
                           <tr>
                             <th class="th-sm" >Candidate ID</th>
@@ -127,8 +127,8 @@ include 'include/header_votingpage.php'
                         </table>
                       </div>
                 </div>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationmodal">Submit</button>
-                 <button class="btn btn-danger " name="btn_back" type="button"value="Back" onclick="history.back()">Back</button>
+                 <button class="btn btn-secondary " name="btn_back" type="button"value="Back" onclick="history.back()">Back</button>
+                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationmodal">Submit</button>
  
               </div>
             </div>
@@ -148,7 +148,7 @@ include 'include/header_votingpage.php'
                       <span aria-hidden="true">×</span>
                     </button>
                   </div>
-                  <div class="modal-body">You vote cannot be change after you continue</div>
+                  <div class="modal-body">You cannot change after you continue</div>
                   <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                     <a class="btn btn-danger" href="insertvotingintoDB.php">Continue</a>
