@@ -1,5 +1,6 @@
 <?php session_start();
   require 'connection.php';
+  include 'systememail.php';
 	$matric_no=$_SESSION['matric_no'];
 	$name=$_SESSION['name'];
 	$subject=$_SESSION['subject'];
@@ -22,14 +23,14 @@
 	$mail->isSMTP();                                      // Set mailer to use SMTP
 	$mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
 	$mail->SMTPAuth = true;                               // Enable SMTP authentication
-	$mail->Username = 'kuisevotingsystem@gmail.com';                 // SMTP username
-	$mail->Password = 'kuisv0tingsyst3m';                           // SMTP password
+	$mail->Username = $systememail;                 // SMTP username
+	$mail->Password = $systempassword;                           // SMTP password
 	$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
 	$mail->Port = 587;                                    // TCP port to connect to
 
-	$mail->setFrom('kuisevotingsystem@gmail.com', 'KUIS Voting system');
+	$mail->setFrom($systememail, 'KUIS Voting system');
 	$mail->addAddress($email, $name);     // Add a recipient
-	$mail->addReplyTo('kuisevotingsystem@gmail.com', 'NO-REPLY');
+	$mail->addReplyTo($systememail, 'NO-REPLY');
 
 	$mail->isHTML(true);                                  // Set email format to HTML
 
