@@ -21,7 +21,8 @@ if (isset($_GET['data'])) {
     ON co.candidate_id=c.candidate_id
     JOIN voter AS v
     ON c.voter_id=v.voter_id
-    WHERE c.section_id ='$sort_id'";
+    WHERE c.section_id ='$sort_id'
+    ORDER BY co.total_vote DESC";
       switch ($sort_id) {
     case '1':
       $fstm_status="active";
@@ -51,7 +52,8 @@ else{
     ON co.candidate_id=c.candidate_id
     JOIN voter AS v
     ON c.voter_id=v.voter_id
-    WHERE c.section_id =0";
+    WHERE c.section_id =0
+    ORDER BY co.total_vote DESC";
     
 }
     

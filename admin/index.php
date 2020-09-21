@@ -83,13 +83,13 @@
                    ?>
                   <form name="login_form" class="user" method="POST" action="validateuser.php">
                     <div class="form-group">
-                      <input name="txt_username" type="text" class="form-control form-control-user" id="matric_no" aria-describedby="matric_no" placeholder="Enter Username..." required >
+                      <input name="txt_username" type="text" class="form-control form-control-user" id="matric_no" aria-describedby="matric_no" placeholder="Enter Username..." required autofocus>
 
                     </div>
                     <div class="form-group">
                       <input name="txt_password" type="password" class="form-control form-control-user" id="password" placeholder="Password" required>
                     </div>
-                    <input  class="btn btn-primary btn-user btn-block" type="submit" name="btn_login" value="Login">
+                    <input  class="btn btn-primary btn-user btn-block" type="submit" name="btn_login" value="Login" autofocus>
                     
                   </form>
                   <hr>
